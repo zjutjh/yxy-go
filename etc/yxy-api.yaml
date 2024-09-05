@@ -1,0 +1,16 @@
+Name: yxy-api
+Host: 0.0.0.0
+Port: 8888
+Log:
+  ServiceName: yxy-api # 服务名称
+  Mode: console # 日志打印模式 console file
+  Encoding: json # 日志格式 json plain
+  Path: logs # 日志输出路径, Mode 为 file 时生效
+  Level: info # 日志输出级别 debug info error severe
+  Compress: false # 是否压缩日志
+  Stat: false # 是否开启 stat 日志
+  KeepDays: 7 # 日志保留天数, Mode 为 file 时生效
+  StackCooldownMillis: 100 # 堆栈打印冷却时间
+  MaxBackups: 0 # 最多文件保留个数, Mode 为 file 且 Rotation 为 size 时生效, 0 表示无限制
+  MaxSize: 0 # 最大文件大小, Mode 为 file 且 Rotation 为 size 时生效, 0 表示无限制
+  Rotation: daily # 文件分割模式 daily size

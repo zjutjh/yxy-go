@@ -1,0 +1,63 @@
+syntax = "v1"
+
+info (
+	title:   "易校园登录接口"
+	author:  "XiMo"
+	date:    "2024 年 9 月 5 日"
+	version: "v1"
+)
+
+type (
+	GetSecurityTokenReq {
+		DeviceID string `form:"device_id"`
+	}
+	GetSecurityTokenResp {
+		Level         uint8  `json:"level"`
+		SecurityToken string `json:"security_token"`
+	}
+)
+
+type (
+	GetCaptchaImageReq {
+		DeviceID      string `form:"device_id"`
+		SecurityToken string `form:"security_token"`
+	}
+	GetCaptchaImageResp {
+		Img string `json:"img"`
+	}
+)
+
+type (
+	SendCodeReq {
+		DeviceID      string `json:"device_id"`
+		SecurityToken string `json:"security_token"`
+		Captcha       string `json:"captcha,optional"`
+		PhoneNum      string `json:"phone_num"`
+	}
+	SendCodeResp {
+		UserExists bool `json:"user_exists"`
+	}
+)
+
+type (
+	LoginByCodeReq {
+		DeviceID string `json:"device_id"`
+		PhoneNum string `json:"phone_num"`
+		Code     string `json:"code"`
+	}
+	LoginByCodeResp {
+		UID            string `json:"uid"`
+		Token          string `json:"token"`
+		BindCardStatus uint8  `json:"bind_card_status"`
+	}
+)
+
+type (
+	LoginBySilentReq {
+		UID      string `json:"uid"`
+		DeviceID string `json:"device_id"`
+		PhoneNum string `json:"phone_num"`
+		Token    string `json:"token"`
+	}
+	LoginBySilentResp {}
+)

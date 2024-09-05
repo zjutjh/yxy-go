@@ -1,0 +1,60 @@
+syntax = "v1"
+
+info (
+	title:   "易校园电费接口"
+	author:  "XiMo"
+	date:    "2024 年 9 月 5 日"
+	version: "v1"
+)
+
+type (
+	GetAuthReq {
+		UID string `form:"uid"`
+	}
+	GetAuthResp {
+		Token string `json:"token"`
+	}
+)
+
+type (
+	GetElectricitySurplusReq {
+		Token  string `form:"token"`
+		Campus string `form:"campus,options=zhpf|mgs"`
+	}
+	GetElectricitySurplusResp {
+		DisplayRoomName string `json:"display_room_name"`
+		RoomStrConcat   string `json:"room_str_concat"`
+		Surplus         string `json:"surplus"`
+	}
+)
+
+type (
+	GetElectricityRechargeRecordsReq {
+		Token         string `form:"token"`
+		Campus        string `form:"campus,options=zhpf|mgs"`
+		Page          string `form:"page"`
+		RoomStrConcat string `form:"room_str_concat"`
+	}
+	ElectricityRechargeRecord {
+		Money    string `json:"money"`
+		Datetime string `json:"datetime"`
+	}
+	GetElectricityRechargeRecordsResp {
+		List []ElectricityRechargeRecord `json:"list"`
+	}
+)
+
+type (
+	GetElectricityUsageRecordsReq {
+		Token         string `form:"token"`
+		Campus        string `form:"campus,options=zhpf|mgs"`
+		RoomStrConcat string `form:"room_str_concat"`
+	}
+	ElectricityUsageRecord {
+		Usage    string `json:"usage"`
+		Datetime string `json:"datetime"`
+	}
+	GetElectricityUsageRecordsResp {
+		List []ElectricityUsageRecord `json:"list"`
+	}
+)

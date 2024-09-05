@@ -1,0 +1,36 @@
+syntax = "v1"
+
+info (
+	title:   "易校园一卡通接口"
+	author:  "XiMo"
+	date:    "2024 年 9 月 5 日"
+	version: "v1"
+)
+
+type (
+	GetCardBalanceReq {
+		UID      string `form:"uid"`
+		DeviceID string `form:"device_id"`
+		Token    string `form:"token"`
+	}
+	GetCardBalanceResp {
+		Balance string `json:"balance"`
+	}
+)
+
+type (
+	GetCardConsumptionRecordsReq {
+		UID       string `form:"uid"`
+		DeviceID  string `form:"device_id"`
+		Token     string `form:"token"`
+		QueryTime string `form:"query_time"`
+	}
+	CardConsumptionRecord {
+		Address string `json:"address"`
+		Money   string `json:"money"`
+		Time    string `json:"time"`
+	}
+	GetCardConsumptionRecordsResp {
+		List []CardConsumptionRecord `json:"list"`
+	}
+)

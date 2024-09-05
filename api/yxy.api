@@ -1,0 +1,69 @@
+syntax = "v1"
+
+info (
+	title:   "易校园接口"
+	author:  "XiMo"
+	date:    "2024 年 9 月 5 日"
+	version: "v1"
+)
+
+import (
+	"./yxy/login.api"
+	"./yxy/card.api"
+	"./yxy/electricity.api"
+)
+
+// 登录接口
+@server (
+	prefix: /api/v1/login
+	group:  login
+)
+service yxy-api {
+	@handler getSecurityToken
+	get /security-token (GetSecurityTokenReq) returns (GetSecurityTokenResp)
+
+	@handler getCaptchaImage
+	get /captcha-image (GetCaptchaImageReq) returns (GetCaptchaImageResp)
+
+	@handler sendCode
+	post /send-code (SendCodeReq) returns (SendCodeResp)
+
+	@handler loginByCode
+	post /code (LoginByCodeReq) returns (LoginByCodeResp)
+
+	@handler loginBySilent
+	post /silent (LoginBySilentReq) returns (LoginBySilentResp)
+}
+
+// 一卡通接口
+@server (
+	prefix: /api/v1/card
+	group:  card
+)
+service yxy-api {
+	@handler getCardBalance
+	get /balance (GetCardBalanceReq) returns (GetCardBalanceResp)
+
+	@handler getCardConsumptionRecords
+	get /consumption-records (GetCardConsumptionRecordsReq) returns (GetCardConsumptionRecordsResp)
+}
+
+// 电费接口
+@server (
+	prefix: /api/v1/electricity
+	group:  electricity
+)
+service yxy-api {
+	@handler getAuth
+	get /auth (GetAuthReq) returns (GetAuthResp)
+
+	@handler getElectricitySurplus
+	get /surplus (GetElectricitySurplusReq) returns (GetElectricitySurplusResp)
+
+	@handler getElectricityRechargeRecords
+	get /recharge-records (GetElectricityRechargeRecordsReq) returns (GetElectricityRechargeRecordsResp)
+
+	@handler getElectricityUsageRecords
+	get /usage-records (GetElectricityUsageRecordsReq) returns (GetElectricityUsageRecordsResp)
+}
+
