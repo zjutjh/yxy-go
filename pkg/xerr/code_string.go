@@ -11,22 +11,23 @@ func _() {
 	_ = x[ErrSuccess-0]
 	_ = x[ErrUnknown-100001]
 	_ = x[ErrParam-100002]
+	_ = x[ErrHttpClient-100003]
 }
 
 const (
 	_Code_name_0 = "Success"
-	_Code_name_1 = "服务异常参数错误"
+	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
 )
 
 var (
-	_Code_index_1 = [...]uint8{0, 12, 24}
+	_Code_index_1 = [...]uint8{0, 12, 24, 49}
 )
 
 func (i Code) String() string {
 	switch {
 	case i == 0:
 		return _Code_name_0
-	case 100001 <= i && i <= 100002:
+	case 100001 <= i && i <= 100003:
 		i -= 100001
 		return _Code_name_1[_Code_index_1[i]:_Code_index_1[i+1]]
 	default:
