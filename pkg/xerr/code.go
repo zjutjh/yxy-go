@@ -13,3 +13,8 @@ const (
 	ErrParam                           // 参数错误
 	ErrHttpClient                      // HTTP客户端请求错误
 )
+
+// login err
+const (
+	ErrTokenInvalid Code = iota + 110001 // Token无效
+)

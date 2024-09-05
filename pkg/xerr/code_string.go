@@ -12,11 +12,13 @@ func _() {
 	_ = x[ErrUnknown-100001]
 	_ = x[ErrParam-100002]
 	_ = x[ErrHttpClient-100003]
+	_ = x[ErrTokenInvalid-110001]
 }
 
 const (
 	_Code_name_0 = "Success"
 	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
+	_Code_name_2 = "Token无效"
 )
 
 var (
@@ -30,6 +32,8 @@ func (i Code) String() string {
 	case 100001 <= i && i <= 100003:
 		i -= 100001
 		return _Code_name_1[_Code_index_1[i]:_Code_index_1[i+1]]
+	case i == 110001:
+		return _Code_name_2
 	default:
 		return "Code(" + strconv.FormatInt(int64(i), 10) + ")"
 	}

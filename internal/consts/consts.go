@@ -8,4 +8,5 @@ const (
 
 const (
 	GET_SECURITY_TOKEN_URL = COMPUS_URL + "/common/security/token"
+	GET_CAPTCHA_IMAGE_URL  = COMPUS_URL + "/common/security/imageCaptcha"
 )
