@@ -12,4 +12,5 @@ const (
 	GET_CAPTCHA_IMAGE_URL  = COMPUS_URL + "/common/security/imageCaptcha"
 	SEND_CODE_URL          = COMPUS_URL + "/compus/user/sendLoginVerificationCode"
 	LOGIN_BY_CODE_URL      = COMPUS_URL + "/login/doLoginByVerificationCode"
+	LOGIN_BY_Silent_URL    = COMPUS_URL + "/login/doLoginBySilent"
 )
