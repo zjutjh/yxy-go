@@ -22,4 +22,6 @@ const (
 	ErrDeviceIDInconsistent                      // deviceId不一致
 	ErrPhoneNumWrong                             // 手机号格式错误
 	ErrSendLimit                                 // 短信发送超限
+	ErrCodeWrong                                 // 手机验证码错误, 错误3次将锁定15分钟
+	ErrCodeWrongThreeTimes                       // 手机验证码错误3次, 账号锁定15分钟
 )
