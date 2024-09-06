@@ -16,5 +16,10 @@ const (
 
 // login err
 const (
-	ErrTokenInvalid Code = iota + 110001 // Token无效
+	ErrTokenInvalid         Code = iota + 110001 // Token无效
+	ErrCaptchaInvalid                            // 图片验证码已失效
+	ErrCaptchaWrong                              // 图片验证码错误
+	ErrDeviceIDInconsistent                      // deviceId不一致
+	ErrPhoneNumWrong                             // 手机号格式错误
+	ErrSendLimit                                 // 短信发送超限
 )

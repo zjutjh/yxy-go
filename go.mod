@@ -3,6 +3,7 @@ module yxy-go
 go 1.21.0
 
 require (
+	github.com/forgoer/openssl v1.6.0
 	github.com/go-resty/resty/v2 v2.14.0
 	github.com/google/uuid v1.6.0
 	github.com/zeromicro/go-zero v1.7.2

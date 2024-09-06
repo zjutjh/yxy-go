@@ -13,16 +13,22 @@ func _() {
 	_ = x[ErrParam-100002]
 	_ = x[ErrHttpClient-100003]
 	_ = x[ErrTokenInvalid-110001]
+	_ = x[ErrCaptchaInvalid-110002]
+	_ = x[ErrCaptchaWrong-110003]
+	_ = x[ErrDeviceIDInconsistent-110004]
+	_ = x[ErrPhoneNumWrong-110005]
+	_ = x[ErrSendLimit-110006]
 }
 
 const (
 	_Code_name_0 = "Success"
 	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
-	_Code_name_2 = "Token无效"
+	_Code_name_2 = "Token无效图片验证码已失效图片验证码错误deviceId不一致手机号格式错误短信发送超限"
 )
 
 var (
 	_Code_index_1 = [...]uint8{0, 12, 24, 49}
+	_Code_index_2 = [...]uint8{0, 11, 35, 56, 73, 94, 112}
 )
 
 func (i Code) String() string {
@@ -32,8 +38,9 @@ func (i Code) String() string {
 	case 100001 <= i && i <= 100003:
 		i -= 100001
 		return _Code_name_1[_Code_index_1[i]:_Code_index_1[i+1]]
-	case i == 110001:
-		return _Code_name_2
+	case 110001 <= i && i <= 110006:
+		i -= 110001
+		return _Code_name_2[_Code_index_2[i]:_Code_index_2[i+1]]
 	default:
 		return "Code(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
