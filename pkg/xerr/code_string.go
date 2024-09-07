@@ -12,6 +12,8 @@ func _() {
 	_ = x[ErrUnknown-100001]
 	_ = x[ErrParam-100002]
 	_ = x[ErrHttpClient-100003]
+	_ = x[ErrLoginExpired-100101]
+	_ = x[ErrAccountLoggedOut-100102]
 	_ = x[ErrTokenInvalid-110001]
 	_ = x[ErrCaptchaInvalid-110002]
 	_ = x[ErrCaptchaWrong-110003]
@@ -20,19 +22,19 @@ func _() {
 	_ = x[ErrSendLimit-110006]
 	_ = x[ErrCodeWrong-110007]
 	_ = x[ErrCodeWrongThreeTimes-110008]
-	_ = x[ErrLoginExpired-110009]
-	_ = x[ErrAccountLoggedOut-110010]
 }
 
 const (
 	_Code_name_0 = "Success"
 	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
-	_Code_name_2 = "Token无效图片验证码已失效图片验证码错误deviceId不一致手机号格式错误短信发送超限手机验证码错误, 错误3次将锁定15分钟手机验证码错误3次, 账号锁定15分钟登录已过期账号被登出"
+	_Code_name_2 = "登录已过期账号被登出"
+	_Code_name_3 = "Token无效图片验证码已失效图片验证码错误deviceId不一致手机号格式错误短信发送超限手机验证码错误, 错误3次将锁定15分钟手机验证码错误3次, 账号锁定15分钟"
 )
 
 var (
 	_Code_index_1 = [...]uint8{0, 12, 24, 49}
-	_Code_index_2 = [...]uint8{0, 11, 35, 56, 73, 94, 112, 162, 209, 224, 239}
+	_Code_index_2 = [...]uint8{0, 15, 30}
+	_Code_index_3 = [...]uint8{0, 11, 35, 56, 73, 94, 112, 162, 209}
 )
 
 func (i Code) String() string {
@@ -42,9 +44,12 @@ func (i Code) String() string {
 	case 100001 <= i && i <= 100003:
 		i -= 100001
 		return _Code_name_1[_Code_index_1[i]:_Code_index_1[i+1]]
-	case 110001 <= i && i <= 110010:
-		i -= 110001
+	case 100101 <= i && i <= 100102:
+		i -= 100101
 		return _Code_name_2[_Code_index_2[i]:_Code_index_2[i+1]]
+	case 110001 <= i && i <= 110008:
+		i -= 110001
+		return _Code_name_3[_Code_index_3[i]:_Code_index_3[i+1]]
 	default:
 		return "Code(" + strconv.FormatInt(int64(i), 10) + ")"
 	}

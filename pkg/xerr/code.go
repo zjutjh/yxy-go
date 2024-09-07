@@ -14,6 +14,12 @@ const (
 	ErrHttpClient                      // HTTP客户端请求错误
 )
 
+// yxy common err
+const (
+	ErrLoginExpired     Code = iota + 100101 // 登录已过期
+	ErrAccountLoggedOut                      // 账号被登出
+)
+
 // login err
 const (
 	ErrTokenInvalid         Code = iota + 110001 // Token无效
@@ -24,6 +30,4 @@ const (
 	ErrSendLimit                                 // 短信发送超限
 	ErrCodeWrong                                 // 手机验证码错误, 错误3次将锁定15分钟
 	ErrCodeWrongThreeTimes                       // 手机验证码错误3次, 账号锁定15分钟
-	ErrLoginExpired                              // 登录已过期
-	ErrAccountLoggedOut                          // 账号被登出
 )
