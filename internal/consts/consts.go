@@ -17,5 +17,6 @@ const (
 )
 
 const (
-	GET_CARD_BALANCE_URL = COMPUS_URL + "/compus/user/getCardMoney"
+	GET_CARD_BALANCE_URL             = COMPUS_URL + "/compus/user/getCardMoney"
+	GET_CARD_CONSUMPTION_RECORDS_URL = COMPUS_URL + "/routeauth/auth/route/user/cardQuerynoPage"
 )
