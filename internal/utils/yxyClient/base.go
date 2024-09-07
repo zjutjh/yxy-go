@@ -1,6 +1,8 @@
 package yxyClient
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"strings"
 	"yxy-go/internal/consts"
@@ -16,6 +18,11 @@ func GenYxyDeviceID(deviceID string) string {
 	}
 
 	return prefix + strings.ReplaceAll(deviceID, "-", "")
+}
+
+func GenRanmonFakeMd5Token() string {
+	hash := md5.Sum([]byte(uuid.New().String()))
+	return hex.EncodeToString(hash[:])
 }
 
 func GetYxyBaseReqParam(deviceID string) (baseReq map[string]interface{}, baseHeaders map[string]string) {
