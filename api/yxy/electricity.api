@@ -8,10 +8,10 @@ info (
 )
 
 type (
-	GetAuthReq {
+	GetElectricityAuthReq {
 		UID string `form:"uid"`
 	}
-	GetAuthResp {
+	GetElectricityAuthResp {
 		Token string `json:"token"`
 	}
 )

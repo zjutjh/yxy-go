@@ -54,8 +54,8 @@ service yxy-api {
 	group:  electricity
 )
 service yxy-api {
-	@handler getAuth
-	get /auth (GetAuthReq) returns (GetAuthResp)
+	@handler getElectricityAuth
+	get /auth (GetElectricityAuthReq) returns (GetElectricityAuthResp)
 
 	@handler getElectricitySurplus
 	get /surplus (GetElectricitySurplusReq) returns (GetElectricitySurplusResp)

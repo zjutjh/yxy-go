@@ -34,7 +34,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/auth",
-				Handler: electricity.GetAuthHandler(serverCtx),
+				Handler: electricity.GetElectricityAuthHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,

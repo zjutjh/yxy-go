@@ -17,14 +17,6 @@ type ElectricityUsageRecord struct {
 	Datetime string `json:"datetime"`
 }
 
-type GetAuthReq struct {
-	UID string `form:"uid"`
-}
-
-type GetAuthResp struct {
-	Token string `json:"token"`
-}
-
 type GetCaptchaImageReq struct {
 	DeviceID      string `form:"device_id"`
 	SecurityToken string `form:"security_token"`
@@ -53,6 +45,14 @@ type GetCardConsumptionRecordsReq struct {
 
 type GetCardConsumptionRecordsResp struct {
 	List []CardConsumptionRecord `json:"list"`
+}
+
+type GetElectricityAuthReq struct {
+	UID string `form:"uid"`
+}
+
+type GetElectricityAuthResp struct {
+	Token string `json:"token"`
 }
 
 type GetElectricityRechargeRecordsReq struct {
