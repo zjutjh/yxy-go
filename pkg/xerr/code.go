@@ -34,5 +34,7 @@ const (
 
 // electricity err
 const (
-	ErrUserNotFound Code = iota + 110101 // 用户不存在
+	ErrUserNotFound            Code = iota + 110101 // 用户不存在
+	ErrElectricityTokenInvalid                      // 电费Token无效
+	ErrElectricityBindNotFound                      // 未找到电费绑定信息
 )

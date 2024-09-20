@@ -24,6 +24,9 @@ const (
 )
 
 const (
-	GET_ELECTRICITY_AUTH_CODE_URL  = AUTH_URL + "/authoriz/getCodeV2"
-	GET_ELECTRICITY_AUTH_TOKEN_URL = APPLICATION_URL + "/app/login/getUser4Authorize"
+	GET_ELECTRICITY_AUTH_CODE_URL    = AUTH_URL + "/authoriz/getCodeV2"
+	GET_ELECTRICITY_AUTH_TOKEN_URL   = APPLICATION_URL + "/app/login/getUser4Authorize"
+	QUERY_ELECTRICITY_BIND_URL       = APPLICATION_URL + "/app/electric/queryBind"
+	GET_ELECTRICITY_ZHPF_SURPLUS_URL = APPLICATION_URL + "/app/electric/queryISIMSRoomSurplus"
+	GET_ELECTRICITY_MGS_SURPLUS_URL  = APPLICATION_URL + "/app/electric/queryRoomSurplus"
 )
