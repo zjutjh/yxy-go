@@ -31,3 +31,8 @@ const (
 	ErrCodeWrong                                 // 手机验证码错误, 错误3次将锁定15分钟
 	ErrCodeWrongThreeTimes                       // 手机验证码错误3次, 账号锁定15分钟
 )
+
+// electricity err
+const (
+	ErrUserNotFound Code = iota + 110101 // 用户不存在
+)

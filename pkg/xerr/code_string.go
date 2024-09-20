@@ -22,6 +22,7 @@ func _() {
 	_ = x[ErrSendLimit-110006]
 	_ = x[ErrCodeWrong-110007]
 	_ = x[ErrCodeWrongThreeTimes-110008]
+	_ = x[ErrUserNotFound-110101]
 }
 
 const (
@@ -29,6 +30,7 @@ const (
 	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
 	_Code_name_2 = "登录已过期账号被登出"
 	_Code_name_3 = "Token无效图片验证码已失效图片验证码错误deviceId不一致手机号格式错误短信发送超限手机验证码错误, 错误3次将锁定15分钟手机验证码错误3次, 账号锁定15分钟"
+	_Code_name_4 = "用户不存在"
 )
 
 var (
@@ -50,6 +52,8 @@ func (i Code) String() string {
 	case 110001 <= i && i <= 110008:
 		i -= 110001
 		return _Code_name_3[_Code_index_3[i]:_Code_index_3[i+1]]
+	case i == 110101:
+		return _Code_name_4
 	default:
 		return "Code(" + strconv.FormatInt(int64(i), 10) + ")"
 	}

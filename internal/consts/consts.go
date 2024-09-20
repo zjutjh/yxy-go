@@ -6,6 +6,8 @@ const (
 	CLIENT_ID       = "65l281jbb6wjvuo"
 	SCHOOL_CODE     = "10337" // ZJUT
 	COMPUS_URL      = "https://compus.xiaofubao.com"
+	APPLICATION_URL = "https://application.xiaofubao.com"
+	AUTH_URL        = "https://auth.xiaofubao.com"
 )
 
 const (
@@ -19,4 +21,9 @@ const (
 const (
 	GET_CARD_BALANCE_URL             = COMPUS_URL + "/compus/user/getCardMoney"
 	GET_CARD_CONSUMPTION_RECORDS_URL = COMPUS_URL + "/routeauth/auth/route/user/cardQuerynoPage"
+)
+
+const (
+	GET_ELECTRICITY_AUTH_CODE_URL  = AUTH_URL + "/authoriz/getCodeV2"
+	GET_ELECTRICITY_AUTH_TOKEN_URL = APPLICATION_URL + "/app/login/getUser4Authorize"
 )
