@@ -78,7 +78,7 @@ func (l *GetCardConsumptionRecordsLogic) GetCardConsumptionRecords(req *types.Ge
 	if !yxyResp.Success {
 		errCode := xerr.ErrUnknown
 		if yxyResp.Message == "登录已过期，请重新登录[user no find]" {
-			errCode = xerr.ErrLoginExpired
+			errCode = xerr.ErrUserNotFound
 		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" {
 			errCode = xerr.ErrAccountLoggedOut
 		}

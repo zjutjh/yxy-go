@@ -16,7 +16,7 @@ const (
 
 // yxy common err
 const (
-	ErrLoginExpired     Code = iota + 100101 // 登录已过期
+	ErrUserNotFound     Code = iota + 100101 // 用户不存在
 	ErrAccountLoggedOut                      // 账号被登出
 )
 
@@ -34,7 +34,6 @@ const (
 
 // electricity err
 const (
-	ErrUserNotFound            Code = iota + 110101 // 用户不存在
-	ErrElectricityTokenInvalid                      // 电费Token无效
+	ErrElectricityTokenInvalid Code = iota + 110101 // 电费Token无效
 	ErrElectricityBindNotFound                      // 未找到电费绑定信息
 )
