@@ -34,6 +34,7 @@ const (
 
 // electricity err
 const (
-	ErrElectricityTokenInvalid Code = iota + 110101 // 电费Token无效
-	ErrElectricityBindNotFound                      // 未找到电费绑定信息
+	ErrElectricityTokenInvalid       Code = iota + 110101 // 电费Token无效
+	ErrElectricityBindNotFound                            // 未找到电费绑定信息
+	ErrRoomInfoWrongOrCampusMismatch                      // 房间信息有误或校区不匹配
 )
