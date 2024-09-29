@@ -3,6 +3,7 @@ package electricity
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"yxy-go/internal/consts"
@@ -59,6 +60,11 @@ func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *
 	parts := strings.Split(req.RoomStrConcat, "#")
 	if len(parts) < 4 {
 		return nil, xerr.WithCode(xerr.ErrParam, fmt.Sprintf("Param room_str_concat error: %v", req.RoomStrConcat))
+	}
+	for _, part := range parts {
+		if part == "" || !regexp.MustCompile(`^\d+$`).MatchString(part) {
+			return nil, xerr.WithCode(xerr.ErrParam, fmt.Sprintf("Invalid part in room_str_concat: %v", req.RoomStrConcat))
+		}
 	}
 
 	yxyReq := map[string]interface{}{
