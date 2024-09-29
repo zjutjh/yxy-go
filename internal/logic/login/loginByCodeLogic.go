@@ -105,9 +105,9 @@ func (l *LoginByCodeLogic) LoginByCode(req *types.LoginByCodeReq) (resp *types.L
 		errCode := xerr.ErrUnknown
 		if yxyResp.Message == "手机号格式不正确" {
 			errCode = xerr.ErrPhoneNumWrong
-		} else if strings.HasSuffix(yxyResp.Message, "3次过后将锁定15分钟,请谨慎操作") { // 您已输错(1,2,3)次, 3次过后将锁定15分钟,请谨慎操作
+		} else if strings.HasSuffix(yxyResp.Message, "3次过后将锁定15分钟,请慎重操作") { // 您已输错(1,2,3)次,3次过后将锁定15分钟,请慎重操作
 			errCode = xerr.ErrCodeWrong
-		} else if yxyResp.Message == "您已输错3次,账号被锁定15分钟" {
+		} else if yxyResp.Message == "您已输错3次,账户被锁定15分钟" {
 			errCode = xerr.ErrCodeWrongThreeTimes
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))

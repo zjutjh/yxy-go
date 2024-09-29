@@ -46,7 +46,7 @@ func (l *GetCaptchaImageLogic) GetCaptchaImage(req *types.GetCaptchaImageReq) (r
 
 	if yxyResp.StatusCode != 0 {
 		errCode := xerr.ErrUnknown
-		if yxyResp.Message == "Token无效" {
+		if yxyResp.Message == "token无效" {
 			errCode = xerr.ErrTokenInvalid
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
