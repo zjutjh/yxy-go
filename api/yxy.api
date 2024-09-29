@@ -50,8 +50,9 @@ service yxy-api {
 
 // 电费接口
 @server (
-	prefix: /api/v1/electricity
-	group:  electricity
+	prefix:  /api/v1/electricity
+	group:   electricity
+	timeout: 10s
 )
 service yxy-api {
 	@handler getElectricityAuth

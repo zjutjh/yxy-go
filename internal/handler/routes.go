@@ -3,6 +3,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	card "yxy-go/internal/handler/card"
 	electricity "yxy-go/internal/handler/electricity"
@@ -53,6 +54,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/v1/electricity"),
+		rest.WithTimeout(10000*time.Millisecond),
 	)
 
 	server.AddRoutes(
