@@ -6,9 +6,9 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-func HttpSendPost(url string, req map[string]interface{}, headers map[string]string, resp interface{}) (*resty.Response, error) {
-	client := resty.New()
+var client = resty.New()
 
+func HttpSendPost(url string, req map[string]interface{}, headers map[string]string, resp interface{}) (*resty.Response, error) {
 	r, err := client.R().
 		SetHeaders(headers).
 		SetBody(req).

@@ -12,9 +12,8 @@ import (
 	"yxy-go/internal/utils/yxyClient"
 	"yxy-go/pkg/xerr"
 
-	"github.com/zeromicro/go-zero/core/logx"
-
 	"github.com/go-resty/resty/v2"
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type GetElectricityAuthLogic struct {
@@ -53,6 +52,8 @@ type GetElectricityAuthTokenYxyResp struct {
 	Success bool `json:"success"`
 }
 
+var client = resty.New().SetRedirectPolicy(resty.NoRedirectPolicy())
+
 func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAuthReq) (resp *types.GetElectricityAuthResp, err error) {
 	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
 	yxyReq := map[string]string{
@@ -63,9 +64,6 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 		"unionid":     req.UID,
 		"schoolCode":  consts.SCHOOL_CODE,
 	}
-
-	client := resty.New()
-	client.SetRedirectPolicy(resty.NoRedirectPolicy())
 
 	r, err := client.R().
 		SetHeaders(yxyHeaders).
