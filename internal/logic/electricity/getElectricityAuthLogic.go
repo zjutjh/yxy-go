@@ -86,15 +86,12 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 	ymCode := parsedURL.Query().Get("ymCode")
 
 	var yxyResp GetElectricityAuthTokenYxyResp
-	r, err = client.R().
-		SetHeaders(yxyHeaders).
-		SetFormData(map[string]string{
+	r, err = yxyClient.HttpSendPost(consts.GET_ELECTRICITY_AUTH_TOKEN_URL,
+		map[string]interface{}{
 			"code": ymCode,
-		}).
-		SetResult(&yxyResp).
-		Post(consts.GET_ELECTRICITY_AUTH_TOKEN_URL)
+		}, yxyHeaders, &yxyResp)
 	if err != nil {
-		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
+		return nil, err
 	}
 
 	if yxyResp.StatusCode != 0 {
