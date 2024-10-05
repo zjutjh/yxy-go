@@ -24,13 +24,13 @@ func HttpResponse(r *http.Request, w http.ResponseWriter, resp interface{}, err 
 			code = e.Code()
 		}
 
-		logc.Errorf(r.Context(), "%+v", err)
+		logc.Errorf(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.URL.Path, err, r.RemoteAddr, r.UserAgent())
 		httpx.WriteJson(w, http.StatusOK, Error(code))
 	}
 }
 
 func ParamErrorResponse(r *http.Request, w http.ResponseWriter, err error) {
-	logc.Errorf(r.Context(), "%+v", err)
+	logc.Errorf(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.URL.Path, err, r.RemoteAddr, r.UserAgent())
 	httpx.WriteJson(w, http.StatusOK, Error(xerr.ErrParam))
 }
 

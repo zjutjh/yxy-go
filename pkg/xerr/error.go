@@ -10,7 +10,7 @@ type ErrCode struct {
 }
 
 func (e *ErrCode) Error() string {
-	return fmt.Sprintf("code: %d, msg: %s", e.Code(), e.Msg())
+	return fmt.Sprintf("code: %d, err: %s, msg: %s", e.Code(), e.code.String(), e.Msg())
 }
 
 func (e *ErrCode) Code() Code {
