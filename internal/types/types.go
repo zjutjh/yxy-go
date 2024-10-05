@@ -72,9 +72,9 @@ type GetElectricitySurplusReq struct {
 }
 
 type GetElectricitySurplusResp struct {
-	DisplayRoomName string `json:"display_room_name"`
-	RoomStrConcat   string `json:"room_str_concat"`
-	Surplus         string `json:"surplus"`
+	DisplayRoomName string  `json:"display_room_name"`
+	RoomStrConcat   string  `json:"room_str_concat"`
+	Surplus         float64 `json:"surplus"`
 }
 
 type GetElectricityUsageRecordsReq struct {

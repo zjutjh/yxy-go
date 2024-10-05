@@ -3,7 +3,6 @@ package electricity
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"yxy-go/internal/consts"
@@ -176,7 +175,7 @@ func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectri
 		resp = &types.GetElectricitySurplusResp{
 			DisplayRoomName: yxyZhpfResp.Data.DisplayRoomName,
 			RoomStrConcat:   strings.Join([]string{roomStrConcat, yxyZhpfResp.Data.SurplusList[0].Mdtype}, "#"),
-			Surplus:         strconv.FormatFloat(yxyZhpfResp.Data.Soc, 'f', 2, 64),
+			Surplus:         yxyZhpfResp.Data.Soc,
 		}
 
 	case "mgs":
@@ -193,7 +192,7 @@ func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectri
 		resp = &types.GetElectricitySurplusResp{
 			DisplayRoomName: yxyMgsResp.Data.DisplayRoomName,
 			RoomStrConcat:   roomStrConcat,
-			Surplus:         strconv.FormatFloat(yxyMgsResp.Data.Surplus, 'f', 2, 64),
+			Surplus:         yxyMgsResp.Data.Surplus,
 		}
 	}
 
