@@ -6,7 +6,7 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-var client = resty.New()
+var client = resty.New().SetCookieJar(nil)
 
 func HttpSendPost(url string, req map[string]interface{}, headers map[string]string, resp interface{}) (*resty.Response, error) {
 	r, err := client.R().
