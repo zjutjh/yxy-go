@@ -66,7 +66,7 @@ func (l *GetCardConsumptionRecordsLogic) GetCardConsumptionRecords(req *types.Ge
 
 	yxyReq["token"] = req.Token
 	if req.Token == "" {
-		yxyReq["token"] = yxyClient.GenRanmonFakeMd5Token()
+		yxyReq["token"] = yxyClient.GenFakeToken()
 	}
 
 	var yxyResp GetCardConsumptionRecordsYxyResp

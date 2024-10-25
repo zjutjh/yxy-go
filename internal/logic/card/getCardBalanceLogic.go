@@ -42,7 +42,7 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 
 	yxyReq["token"] = req.Token
 	if req.Token == "" {
-		yxyReq["token"] = yxyClient.GenRanmonFakeMd5Token()
+		yxyReq["token"] = yxyClient.GenFakeToken()
 	}
 
 	var yxyResp GetCardBalanceYxyResp

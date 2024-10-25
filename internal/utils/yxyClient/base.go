@@ -1,10 +1,9 @@
 package yxyClient
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
 	"strings"
+	"time"
 	"yxy-go/internal/consts"
 
 	"github.com/google/uuid"
@@ -20,9 +19,8 @@ func GenYxyDeviceID(deviceID string) string {
 	return prefix + strings.ReplaceAll(deviceID, "-", "")
 }
 
-func GenRanmonFakeMd5Token() string {
-	hash := md5.Sum([]byte(uuid.New().String()))
-	return hex.EncodeToString(hash[:])
+func GenFakeToken() string {
+	return fmt.Sprintf("%d", time.Now().UnixMilli())
 }
 
 func GetYxyBaseReqParam(deviceID string) (baseReq map[string]interface{}, baseHeaders map[string]string) {
