@@ -101,7 +101,7 @@ func (l *GetElectricityUsageRecordsLogic) GetElectricityUsageRecords(req *types.
 
 		for _, row := range yxyZhpfResp.Rows {
 			record := types.ElectricityUsageRecord{
-				Usage:    row.Used,
+				Usage:    row.Used + "度",
 				Datetime: row.Datetime,
 			}
 			records = append(records, record)

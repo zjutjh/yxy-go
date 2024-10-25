@@ -102,7 +102,7 @@ func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *
 
 		for _, row := range yxyZhpfResp.Rows {
 			record := types.ElectricityRechargeRecord{
-				Money:    row.Money,
+				Money:    row.Money + "元",
 				Datetime: row.Datetime,
 			}
 			records = append(records, record)
