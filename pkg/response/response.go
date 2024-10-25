@@ -16,6 +16,7 @@ type Response struct {
 
 func HttpResponse(r *http.Request, w http.ResponseWriter, resp interface{}, err error) {
 	if err == nil {
+		logc.Infof(r.Context(), "[HTTP] %d - %s %s - %s - %s", http.StatusOK, r.Method, r.RequestURI, r.RemoteAddr, r.UserAgent())
 		httpx.WriteJson(w, http.StatusOK, Success(resp))
 	} else {
 		code := xerr.ErrUnknown
@@ -24,13 +25,18 @@ func HttpResponse(r *http.Request, w http.ResponseWriter, resp interface{}, err 
 			code = e.Code()
 		}
 
-		logc.Errorf(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.URL.Path, err, r.RemoteAddr, r.UserAgent())
+		logcFunc := logc.Infof
+		if code == xerr.ErrUnknown {
+			logcFunc = logc.Errorf
+		}
+		logcFunc(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.RequestURI, err, r.RemoteAddr, r.UserAgent())
+
 		httpx.WriteJson(w, http.StatusOK, Error(code))
 	}
 }
 
 func ParamErrorResponse(r *http.Request, w http.ResponseWriter, err error) {
-	logc.Errorf(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.URL.Path, err, r.RemoteAddr, r.UserAgent())
+	logc.Infof(r.Context(), "[HTTP] %d - %s %s - %v - %s - %s", http.StatusOK, r.Method, r.RequestURI, err, r.RemoteAddr, r.UserAgent())
 	httpx.WriteJson(w, http.StatusOK, Error(xerr.ErrParam))
 }
 

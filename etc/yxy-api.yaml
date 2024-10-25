@@ -1,6 +1,8 @@
 Name: yxy-api
 Host: 0.0.0.0
 Port: 8888
+Middlewares:
+  Log: false
 Log:
   ServiceName: yxy-api # 服务名称
   Mode: console # 日志打印模式 console file
