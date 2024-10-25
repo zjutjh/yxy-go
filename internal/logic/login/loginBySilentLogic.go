@@ -88,8 +88,12 @@ func (l *LoginBySilentLogic) LoginBySilent(req *types.LoginBySilentReq) (resp *t
 	yxyReq["mobileType"] = "Android for arm64"
 	yxyReq["osType"] = "Android"
 	yxyReq["osVersion"] = "12"
-	yxyReq["token"] = req.Token
 	yxyReq["ymId"] = req.UID
+
+	yxyReq["token"] = req.Token
+	if req.Token == "" {
+		yxyReq["token"] = yxyClient.GenRanmonFakeMd5Token()
+	}
 
 	var yxyResp LoginBySilentYxyResp
 	r, err := yxyClient.HttpSendPost(consts.LOGIN_BY_Silent_URL, yxyReq, yxyHeaders, &yxyResp)

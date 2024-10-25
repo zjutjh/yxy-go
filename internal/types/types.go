@@ -111,8 +111,8 @@ type LoginByCodeResp struct {
 type LoginBySilentReq struct {
 	UID      string `json:"uid"`
 	DeviceID string `json:"device_id"`
-	PhoneNum string `json:"phone_num"`
-	Token    string `json:"token"`
+	PhoneNum string `json:"phone_num,optional"`
+	Token    string `json:"token,optional"`
 }
 
 type LoginBySilentResp struct {
