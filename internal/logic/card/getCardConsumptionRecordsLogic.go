@@ -32,25 +32,25 @@ type GetCardConsumptionRecordsYxyResp struct {
 	// StatusCode int    `json:"statusCode"` // 由于响应中该字段类型不统一(int/string), 因此不解析, 改由Success判断
 	Message string `json:"message"`
 	Rows    []struct {
-		Type           string `json:"type"`
-		Time           string `json:"time"`
-		Dealtime       string `json:"dealtime"`
-		Address        string `json:"address"`
-		FeeName        string `json:"feeName"`
-		Serialno       string `json:"serialno"`
-		Money          string `json:"money"`
-		BusinessName   string `json:"businessName"`
-		BusinessNum    string `json:"businessNum"`
-		FeeNum         string `json:"feeNum"`
-		AccName        string `json:"accName"`
-		AccNum         string `json:"accNum"`
-		PerCode        string `json:"perCode"`
-		EWalletId      string `json:"eWalletId"`
-		MonCard        string `json:"monCard"`
-		AfterMon       string `json:"afterMon"`
-		ConcessionsMon string `json:"concessionsMon"`
+		// Type           string `json:"type"`
+		Time string `json:"time"`
+		// Dealtime       string `json:"dealtime"`
+		Address string `json:"address"`
+		// FeeName        string `json:"feeName"`
+		// Serialno       string `json:"serialno"`
+		Money string `json:"money"`
+		// BusinessName   string `json:"businessName"`
+		// BusinessNum    string `json:"businessNum"`
+		// FeeNum         string `json:"feeNum"`
+		// AccName        string `json:"accName"`
+		// AccNum         string `json:"accNum"`
+		// PerCode        string `json:"perCode"`
+		// EWalletId      string `json:"eWalletId"`
+		// MonCard        string `json:"monCard"`
+		// AfterMon       string `json:"afterMon"`
+		// ConcessionsMon string `json:"concessionsMon"`
 	} `json:"rows"`
-	Total   int  `json:"total"`
+	// Total   int  `json:"total"`
 	Success bool `json:"success"`
 }
 

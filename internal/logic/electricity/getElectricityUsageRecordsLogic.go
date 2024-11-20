@@ -33,11 +33,11 @@ type GetElectricityZhpfUsageRecords struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`
 	Rows       []struct {
-		Roomdm   string `json:"roomdm"`
+		// Roomdm   string `json:"roomdm"`
 		Datetime string `json:"datetime"`
 		Used     string `json:"used"`
 	} `json:"rows"`
-	Total   int  `json:"total"`
+	// Total   int  `json:"total"`
 	Success bool `json:"success"`
 }
 
@@ -48,7 +48,7 @@ type GetElectricityMgsUsageRecords struct {
 		DateTime string `json:"dateTime"`
 		DayUsage string `json:"dayUsage"`
 	} `json:"rows"`
-	Total   int  `json:"total"`
+	// Total   int  `json:"total"`
 	Success bool `json:"success"`
 }
 

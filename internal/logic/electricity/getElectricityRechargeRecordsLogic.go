@@ -33,14 +33,14 @@ type GetElectricityZhpfRechargeRecords struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`
 	Rows       []struct {
-		Roomdm      string `json:"roomdm"`
-		Datetime    string `json:"datetime"`
-		Buytype     string `json:"buytype"`
-		Buyusingtpe string `json:"buyusingtpe"`
-		Money       string `json:"money"`
-		Issend      string `json:"issend"`
+		// Roomdm      string `json:"roomdm"`
+		Datetime string `json:"datetime"`
+		// Buytype     string `json:"buytype"`
+		// Buyusingtpe string `json:"buyusingtpe"`
+		Money string `json:"money"`
+		// Issend      string `json:"issend"`
 	} `json:"rows"`
-	Total   int  `json:"total"`
+	// Total   int  `json:"total"`
 	Success bool `json:"success"`
 }
 
@@ -49,10 +49,10 @@ type GetElectricityMgsRechargeRecords struct {
 	Message    string `json:"message"`
 	Rows       []struct {
 		DateTime string `json:"dateTime"`
-		TypeName string `json:"typeName"`
-		Amount   string `json:"amount"`
+		// TypeName string `json:"typeName"`
+		Amount string `json:"amount"`
 	} `json:"rows"`
-	Total   int  `json:"total"`
+	// Total   int  `json:"total"`
 	Success bool `json:"success"`
 }
 

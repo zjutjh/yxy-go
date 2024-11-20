@@ -33,20 +33,20 @@ type GetElectricityAuthTokenYxyResp struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`
 	Data       struct {
-		ID             string `json:"id"`
-		SchoolCode     string `json:"schoolCode"`
-		SchoolName     string `json:"schoolName"`
-		UserName       string `json:"userName"`
-		UserType       string `json:"userType"`
-		MobilePhone    string `json:"mobilePhone"`
-		JobNo          string `json:"jobNo"`
-		UserIdcard     string `json:"userIdcard"`
-		Sex            uint8  `json:"sex"`
-		UserClass      string `json:"userClass"`
-		BindCardStatus uint8  `json:"bindCardStatus"`
-		TestAccount    uint8  `json:"testAccount"`
-		Platform       string `json:"platform"`
-		ThirdOpenid    string `json:"thirdOpenid"`
+		// ID             string `json:"id"`
+		// SchoolCode     string `json:"schoolCode"`
+		// SchoolName     string `json:"schoolName"`
+		// UserName       string `json:"userName"`
+		// UserType       string `json:"userType"`
+		// MobilePhone    string `json:"mobilePhone"`
+		// JobNo          string `json:"jobNo"`
+		// UserIdcard     string `json:"userIdcard"`
+		// Sex            uint8  `json:"sex"`
+		// UserClass      string `json:"userClass"`
+		// BindCardStatus uint8  `json:"bindCardStatus"`
+		// TestAccount    uint8  `json:"testAccount"`
+		// Platform       string `json:"platform"`
+		// ThirdOpenid    string `json:"thirdOpenid"`
 	} `json:"data"`
 	Success bool `json:"success"`
 }
