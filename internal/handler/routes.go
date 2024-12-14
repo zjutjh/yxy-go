@@ -54,7 +54,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/v1/electricity"),
-		rest.WithTimeout(10000*time.Millisecond),
+		rest.WithTimeout(20000*time.Millisecond),
 	)
 
 	server.AddRoutes(

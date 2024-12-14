@@ -52,7 +52,7 @@ service yxy-api {
 @server (
 	prefix:  /api/v1/electricity
 	group:   electricity
-	timeout: 10s
+	timeout: 20s
 )
 service yxy-api {
 	@handler getElectricityAuth
