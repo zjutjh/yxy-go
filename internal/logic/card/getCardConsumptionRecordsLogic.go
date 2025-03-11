@@ -81,6 +81,8 @@ func (l *GetCardConsumptionRecordsLogic) GetCardConsumptionRecords(req *types.Ge
 			errCode = xerr.ErrUserNotFound
 		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" {
 			errCode = xerr.ErrAccountLoggedOut
+		} else if yxyResp.Message == "用户还未绑卡" {
+			errCode = xerr.ErrNotBindCard
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
