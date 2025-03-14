@@ -11,7 +11,7 @@ type (
 	GetCardBalanceReq {
 		UID      string `form:"uid"`
 		DeviceID string `form:"device_id"`
-		Token    string `form:"token,optional"`
+		Token    string `form:"token"`
 	}
 	GetCardBalanceResp {
 		Balance string `json:"balance"`
@@ -22,7 +22,7 @@ type (
 	GetCardConsumptionRecordsReq {
 		UID       string `form:"uid"`
 		DeviceID  string `form:"device_id"`
-		Token     string `form:"token,optional"`
+		Token     string `form:"token"`
 		QueryTime string `form:"query_time"`
 	}
 	CardConsumptionRecord {

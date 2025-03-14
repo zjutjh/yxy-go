@@ -3,7 +3,6 @@ package yxyClient
 import (
 	"fmt"
 	"strings"
-	"time"
 	"yxy-go/internal/consts"
 
 	"github.com/google/uuid"
@@ -17,10 +16,6 @@ func GenYxyDeviceID(deviceID string) string {
 	}
 
 	return prefix + strings.ReplaceAll(deviceID, "-", "")
-}
-
-func GenFakeToken() string {
-	return fmt.Sprintf("%d", time.Now().UnixMilli())
 }
 
 func GetYxyBaseReqParam(deviceID string) (baseReq map[string]interface{}, baseHeaders map[string]string) {

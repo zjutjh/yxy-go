@@ -39,11 +39,7 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 	yxyReq["ymId"] = req.UID
 	yxyReq["schoolCode"] = consts.SCHOOL_CODE
 	yxyReq["walletNo"] = "1"
-
 	yxyReq["token"] = req.Token
-	if req.Token == "" {
-		yxyReq["token"] = yxyClient.GenFakeToken()
-	}
 
 	var yxyResp GetCardBalanceYxyResp
 	r, err := yxyClient.HttpSendPost(consts.GET_CARD_BALANCE_URL, yxyReq, yxyHeaders, &yxyResp)
@@ -55,7 +51,7 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 		errCode := xerr.ErrUnknown
 		if yxyResp.Message == "登录已过期，请重新登录[user no find]" {
 			errCode = xerr.ErrUserNotFound
-		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" {
+		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" || yxyResp.Message == "登录已过期，请重新登录[token change]" {
 			errCode = xerr.ErrAccountLoggedOut
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
