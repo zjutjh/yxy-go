@@ -18,6 +18,7 @@ const (
 const (
 	ErrUserNotFound     Code = iota + 100101 // 用户不存在
 	ErrAccountLoggedOut                      // 账号被登出
+	ErrNotBindCard                           // 用户还未绑卡
 )
 
 // login err
