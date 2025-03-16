@@ -25,8 +25,9 @@ type (
 	BusTime {
 		DepartureTime string `json:"departure_time"`
 		// ShuttleTypeName string `json:"type`
-		ID          string `json:"id"`
-		RemainSeats int    `json:"remain_seats"`
+		ID           string `json:"id"`
+		RemainSeats  int    `json:"remain_seats"`
+		OrderedSeats int    `json:"ordered_seats"`
 	}
 	BusInfo {
 		ID       string       `json:"id"`
