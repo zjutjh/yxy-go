@@ -28,6 +28,7 @@ type BusTime struct {
 	DepartureTime string `json:"departure_time"`
 	ID            string `json:"id"`
 	RemainSeats   int    `json:"remain_seats"`
+	OrderedSeats  int    `json:"ordered_seats"`
 }
 
 type CardConsumptionRecord struct {
@@ -76,7 +77,7 @@ type GetBusRecordReq struct {
 	Token    string `form:"token"`
 	Page     int    `form:"page"`
 	PageSize int    `form:"page_size"`
-	Status   string `form:"status, options=-10|0|10|20|30"`
+	Status   string `form:"status, options=-10|0|10|20|30, default=0"`
 }
 
 type GetBusRecordResp struct {
