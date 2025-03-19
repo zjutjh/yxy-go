@@ -139,6 +139,8 @@ func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectri
 		errCode := xerr.ErrUnknown
 		if yxyResp.Message == "请重新登录" {
 			errCode = xerr.ErrElectricityTokenInvalid
+		} else if yxyResp.Message == "学校编码不能为空" {
+			errCode = xerr.ErrNotBindCard
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
