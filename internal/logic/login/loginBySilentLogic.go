@@ -55,9 +55,9 @@ type LoginBySilentYxyResp struct {
 		// HeadImg               string   `json:"headImg"`
 		// DeviceID              string   `json:"deviceId"`
 		// TestAccount           uint8    `json:"testAccount"`
-		// Token                 string   `json:"token"`
-		// TokenList             []string `json:"tokenList"`
-		// LastTokenTime         string   `json:"lastTokenTime"` // time
+		Token string `json:"token"`
+		// TokenList     []string `json:"tokenList"`
+		// LastTokenTime string   `json:"lastTokenTime"` // time
 		// JoinNewActivityStatus uint8    `json:"joinNewactivityStatus"`
 		// CreateStatus          uint8    `json:"createStatus"`
 		// EacctStatus           uint8    `json:"eacctStatus"`
@@ -107,5 +107,7 @@ func (l *LoginBySilentLogic) LoginBySilent(req *types.LoginBySilentReq) (resp *t
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
 
-	return nil, nil
+	return &types.LoginBySilentResp{
+		Token: yxyResp.Data.Token,
+	}, nil
 }
