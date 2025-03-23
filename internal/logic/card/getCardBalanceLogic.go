@@ -53,6 +53,8 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 			errCode = xerr.ErrUserNotFound
 		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" || yxyResp.Message == "登录已过期，请重新登录[token change]" {
 			errCode = xerr.ErrAccountLoggedOut
+		} else if yxyResp.Message == "组织编号不能为空" {
+			errCode = xerr.ErrNotBindCard
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}

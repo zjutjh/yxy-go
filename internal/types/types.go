@@ -193,6 +193,7 @@ type LoginBySilentReq struct {
 }
 
 type LoginBySilentResp struct {
+	Token string `json:"token"`
 }
 
 type Message struct {

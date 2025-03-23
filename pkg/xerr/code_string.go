@@ -14,6 +14,7 @@ func _() {
 	_ = x[ErrHttpClient-100003]
 	_ = x[ErrUserNotFound-100101]
 	_ = x[ErrAccountLoggedOut-100102]
+	_ = x[ErrNotBindCard-100103]
 	_ = x[ErrTokenInvalid-110001]
 	_ = x[ErrCaptchaInvalid-110002]
 	_ = x[ErrCaptchaWrong-110003]
@@ -30,14 +31,14 @@ func _() {
 const (
 	_Code_name_0 = "Success"
 	_Code_name_1 = "服务异常参数错误HTTP客户端请求错误"
-	_Code_name_2 = "用户不存在账号被登出"
+	_Code_name_2 = "用户不存在账号被登出用户还未绑卡"
 	_Code_name_3 = "Token无效图片验证码已失效图片验证码错误deviceId不一致手机号格式错误短信发送超限手机验证码错误, 错误3次将锁定15分钟手机验证码错误3次, 账号锁定15分钟"
 	_Code_name_4 = "电费Token无效未找到电费绑定信息房间信息有误或校区不匹配"
 )
 
 var (
 	_Code_index_1 = [...]uint8{0, 12, 24, 49}
-	_Code_index_2 = [...]uint8{0, 15, 30}
+	_Code_index_2 = [...]uint8{0, 15, 30, 48}
 	_Code_index_3 = [...]uint8{0, 11, 35, 56, 73, 94, 112, 162, 209}
 	_Code_index_4 = [...]uint8{0, 17, 44, 80}
 )
@@ -49,7 +50,7 @@ func (i Code) String() string {
 	case 100001 <= i && i <= 100003:
 		i -= 100001
 		return _Code_name_1[_Code_index_1[i]:_Code_index_1[i+1]]
-	case 100101 <= i && i <= 100102:
+	case 100101 <= i && i <= 100103:
 		i -= 100101
 		return _Code_name_2[_Code_index_2[i]:_Code_index_2[i+1]]
 	case 110001 <= i && i <= 110008:

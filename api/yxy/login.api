@@ -59,5 +59,7 @@ type (
 		PhoneNum string `json:"phone_num,optional"`
 		Token    string `json:"token"`
 	}
-	LoginBySilentResp {}
+	LoginBySilentResp {
+		Token string `json:"token"`
+	}
 )
