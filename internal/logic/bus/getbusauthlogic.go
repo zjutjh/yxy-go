@@ -3,7 +3,9 @@ package bus
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/url"
+	"strings"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -11,7 +13,7 @@ import (
 	"yxy-go/internal/utils/yxyClient"
 	"yxy-go/pkg/xerr"
 
-	"github.com/go-resty/resty/v2"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -41,20 +43,53 @@ func (l *GetBusAuthLogic) GetBusAuth(req *types.GetBusAuthReq) (resp *types.GetB
 	}
 
 	client := yxyClient.GetClient()
-	client.SetRedirectPolicy(resty.FlexibleRedirectPolicy(20))
+
 	r, err := client.R().
 		SetHeaders(yxyHeaders).
 		SetQueryParams(yxyReq).
 		Get(consts.GET_BUS_AUTH_CODE_URL)
 
-	if err != nil {
+	if err != nil && (r.StatusCode() != 302 && r.StatusCode() != 200) {
 		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
 	}
 
-	if r.RawResponse == nil || r.RawResponse.Request == nil || r.RawResponse.Request.Response == nil {
-		return nil, xerr.WithCode(xerr.ErrUserNotFound, "用户不存在")
+	location := r.Header().Get("Location")
+	fmt.Println("location: " + location)
+	if location == "" {
+		doc, err := goquery.NewDocumentFromReader(strings.NewReader(r.String()))
+		if err != nil {
+			return nil, xerr.WithCode(xerr.ErrUnknown, err.Error())
+		}
+		stateCode := doc.Find("input.stateCode").AttrOr("value", "")
+		if stateCode == "" {
+			return nil, xerr.WithCode(xerr.ErrUserNotFound, "登录失败")
+		}
+
+		r, err = client.R().
+			SetHeaders(yxyHeaders).
+			SetQueryParams(map[string]string{
+				"stateCode": stateCode,
+				"appid":     "2011112043190345310",
+			}).
+			Get(consts.GET_BUS_ACCESS_URL)
+		if err != nil && r.StatusCode() != 302 {
+			return nil, xerr.WithCode(xerr.ErrUserNotFound, "登录失败")
+		}
+
+		location = r.Header().Get("Location")
 	}
-	redirectURL := r.RawResponse.Request.Response.Header.Get("Location")
+
+	r, err = client.R().
+		SetHeaders(yxyHeaders).
+		Get(location)
+
+	if err != nil && r.StatusCode() != 302 {
+		return nil, xerr.WithCode(xerr.ErrUserNotFound, "登录失败")
+	}
+
+	redirectURL := r.Header().Get("Location")
+	fmt.Println(redirectURL)
+
 	if redirectURL == "" {
 		return nil, xerr.WithCode(xerr.ErrUserNotFound, "登录失败")
 	}
@@ -69,7 +104,7 @@ func (l *GetBusAuthLogic) GetBusAuth(req *types.GetBusAuthReq) (resp *types.GetB
 	corpcode := queryParams.Get("corpcode")
 
 	if openid == "" || corpcode == "" {
-		return nil, xerr.WithCode(xerr.ErrUserNotFound, "Auth code not found")
+		return nil, xerr.WithCode(xerr.ErrUserNotFound, "登录失败")
 	}
 
 	r, err = client.R().
@@ -92,8 +127,6 @@ func (l *GetBusAuthLogic) GetBusAuth(req *types.GetBusAuthReq) (resp *types.GetB
 	if !ok || token == "" {
 		return nil, xerr.WithCode(xerr.ErrTokenInvalid, "返回token为空")
 	}
-
-	client.SetRedirectPolicy(resty.NoRedirectPolicy()) // 把重定向策略改回去避免影响其他功能
 
 	return &types.GetBusAuthResp{
 		Token: token,
