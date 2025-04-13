@@ -1,7 +1,7 @@
 syntax = "v1"
 
 info (
-	title:   "易校园一卡通接口"
+	title:   "易校园校车接口"
 	author:  "Zerohzzzz"
 	date:    "2025 年 2 月 18 日"
 	version: "v1"
@@ -23,11 +23,10 @@ type (
 		Seq  int    `json:"station_seq"`
 	}
 	BusTime {
+		ID            string `json:"id"`
 		DepartureTime string `json:"departure_time"`
-		// ShuttleTypeName string `json:"type`
-		ID           string `json:"id"`
-		RemainSeats  int    `json:"remain_seats"`
-		OrderedSeats int    `json:"ordered_seats"`
+		RemainSeats   int    `json:"remain_seats"`
+		OrderedSeats  int    `json:"ordered_seats"`
 	}
 	BusInfo {
 		ID       string       `json:"id"`
@@ -55,11 +54,9 @@ type (
 	}
 	GetBusRecordReq {
 		Token    string `form:"token"`
+		Status   string `form:"status,options=-10|0|10|20|30"`
 		Page     int    `form:"page"`
 		PageSize int    `form:"page_size"`
-		Status   string `form:"status, options=-10|0|10|20|30, default=0"`
-		// status : -10 所有已结束（包括不成功），0 所有， 20 所有未出发 30 所有成功结束
-		// 推测 10 进行中
 	}
 	GetBusRecordResp {
 		List []BusRecord `json:"list"`
@@ -78,12 +75,12 @@ type (
 		Img     string `json:"img"`
 		Author  string `json:"author"`
 	}
-	GetUnreadMessageReq {
+	GetBusMessageReq {
 		Token    string `form:"token"`
 		Page     int    `form:"page"`
 		PageSize int    `form:"page_size"`
 	}
-	GetUnreadMessageResp {
+	GetBusMessageResp {
 		List []Message `json:"list"`
 	}
 )

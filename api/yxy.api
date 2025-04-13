@@ -71,9 +71,8 @@ service yxy-api {
 
 // 校车接口
 @server (
-	prefix:  /api/v1/bus
-	group:   bus
-	timeout: 20s
+	prefix: /api/v1/bus
+	group:  bus
 )
 service yxy-api {
 	@handler getBusAuth
@@ -85,11 +84,9 @@ service yxy-api {
 	@handler getBusRecord
 	get /record (GetBusRecordReq) returns (GetBusRecordResp)
 
-	@handler getUnreadMessage
-	get /message (GetUnreadMessageReq) returns (GetUnreadMessageResp)
+	@handler getBusMessage
+	get /message (GetBusMessageReq) returns (GetBusMessageResp)
 
-	// @handler updateBusInfo
-	// get /update (UpdateBusInfoReq) returns (UpdateBusInfoResp)
 	@handler getBusQrcode
 	get /qrcode (GetBusQrcodeReq) returns (GetBusQrcodeResp)
 }

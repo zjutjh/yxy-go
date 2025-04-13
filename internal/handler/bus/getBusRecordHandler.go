@@ -3,24 +3,23 @@ package bus
 import (
 	"net/http"
 
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"yxy-go/internal/logic/bus"
 	"yxy-go/internal/svc"
 	"yxy-go/internal/types"
 	"yxy-go/pkg/response"
-
-	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func GetUnreadMessageHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetBusRecordHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.GetUnreadMessageReq
+		var req types.GetBusRecordReq
 		if err := httpx.Parse(r, &req); err != nil {
 			response.ParamErrorResponse(r, w, err)
 			return
 		}
 
-		l := bus.NewGetUnreadMessageLogic(r.Context(), svcCtx)
-		resp, err := l.GetUnreadMessage(&req)
+		l := bus.NewGetBusRecordLogic(r.Context(), svcCtx)
+		resp, err := l.GetBusRecord(&req)
 		response.HttpResponse(r, w, resp, err)
 	}
 }

@@ -2,9 +2,7 @@ package bus
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"log"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -31,38 +29,27 @@ func NewGetBusQrcodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetB
 
 type GetBusQrcodeYxyResp struct {
 	Qrcode string `json:"qrcode"`
-	Detail struct {
-		Code string `json:"code"`
-		Msg  string `json:"msg"`
-	} `json:"detail"`
 }
 
 func (l *GetBusQrcodeLogic) GetBusQrcode(req *types.GetBusQrcodeReq) (resp *types.GetBusQrcodeResp, err error) {
 	var yxyResp GetBusQrcodeYxyResp
+	var errResp yxyClient.YxyBusErrorResp
 	client := yxyClient.GetClient()
 	r, err := client.R().
 		SetHeader("Authorization", req.Token).
+		SetResult(&yxyResp).
+		SetError(&errResp).
 		Get(consts.GET_BUS_QRCODE_URL)
-
 	if err != nil {
-		log.Printf("Error sending request to %s: %v\n", consts.GET_BUS_RECORD_URL, err)
 		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
 	}
 
-	err = json.Unmarshal(r.Body(), &yxyResp)
-	if err != nil {
-		log.Fatalf("Error unmarshaling JSON: %v", err)
-		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
-	}
-
-	if r.StatusCode() == 400 {
-		if yxyResp.Detail.Code == "AUTH_FAIL" {
-			return nil, xerr.WithCode(xerr.ErrTokenInvalid, "权限验证失败")
-		} else {
-			return nil, xerr.WithCode(xerr.ErrHttpClient, fmt.Sprintf("yxy response: %v", r))
+	if r.StatusCode() != 200 {
+		errCode := xerr.ErrUnknown
+		if errResp.Detail.Code == "AUTH_FAIL" {
+			errCode = xerr.ErrBusTokenInvalid
 		}
-	} else if r.StatusCode() == 500 {
-		return nil, xerr.WithCode(xerr.ErrHttpClient, fmt.Sprintf("yxy response: %v", r))
+		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
 
 	return &types.GetBusQrcodeResp{

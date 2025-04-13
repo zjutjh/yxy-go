@@ -2,9 +2,7 @@ package bus
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"log"
 	"strconv"
 
 	"yxy-go/internal/consts"
@@ -30,7 +28,7 @@ func NewGetBusRecordLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetB
 	}
 }
 
-type GetBusRecordsYxyResp struct {
+type GetBusRecordYxyResp struct {
 	Results []struct {
 		DateInfo struct {
 			Info struct {
@@ -41,14 +39,11 @@ type GetBusRecordsYxyResp struct {
 		DepartureTime string `json:"departure_datetime"`
 		PayTime       string `json:"pay_time"`
 	} `json:"results"`
-	Detail struct {
-		Code string `json:"code"`
-		Msg  string `json:"msg"`
-	} `json:"detail"`
 }
 
 func (l *GetBusRecordLogic) GetBusRecord(req *types.GetBusRecordReq) (resp *types.GetBusRecordResp, err error) {
-	var yxyResp GetBusRecordsYxyResp
+	var yxyResp GetBusRecordYxyResp
+	var errResp yxyClient.YxyBusErrorResp
 	client := yxyClient.GetClient()
 	r, err := client.R().
 		SetQueryParams(map[string]string{
@@ -57,32 +52,22 @@ func (l *GetBusRecordLogic) GetBusRecord(req *types.GetBusRecordReq) (resp *type
 			"status":    req.Status,
 		}).
 		SetHeader("Authorization", req.Token).
-		// SetResult(&yxyResp).
+		SetResult(&yxyResp).
+		SetError(&errResp).
 		Get(consts.GET_BUS_RECORD_URL)
-
 	if err != nil {
-		log.Printf("Error sending request to %s: %v\n", consts.GET_BUS_RECORD_URL, err)
 		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
 	}
 
-	err = json.Unmarshal(r.Body(), &yxyResp)
-	if err != nil {
-		log.Fatalf("Error unmarshaling JSON: %v", err)
-		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
-	}
-
-	// fmt.Println(yxyResp.Detail.Code, yxyResp.Detail.Msg)
-	if r.StatusCode() == 400 {
-		if yxyResp.Detail.Code == "AUTH_FAIL" {
-			return nil, xerr.WithCode(xerr.ErrTokenInvalid, "权限验证失败")
-		} else {
-			return nil, xerr.WithCode(xerr.ErrHttpClient, fmt.Sprintf("yxy response: %v", r))
+	if r.StatusCode() != 200 {
+		errCode := xerr.ErrUnknown
+		if errResp.Detail.Code == "AUTH_FAIL" {
+			errCode = xerr.ErrBusTokenInvalid
 		}
-	} else if r.StatusCode() == 500 {
-		return nil, xerr.WithCode(xerr.ErrHttpClient, fmt.Sprintf("yxy response: %v", r))
+		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
 
-	var records []types.BusRecord
+	records := make([]types.BusRecord, 0)
 	for _, row := range yxyResp.Results {
 		record := types.BusRecord{
 			ID:            row.DateInfo.Info.ID,
@@ -92,6 +77,7 @@ func (l *GetBusRecordLogic) GetBusRecord(req *types.GetBusRecordReq) (resp *type
 		}
 		records = append(records, record)
 	}
+
 	return &types.GetBusRecordResp{
 		List: records,
 	}, nil
