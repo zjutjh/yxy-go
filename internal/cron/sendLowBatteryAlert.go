@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 	"yxy-go/internal/logic/electricity"
 	"yxy-go/internal/svc"
@@ -106,6 +107,9 @@ func (l *SendLowBatteryAlertLogic) processSubscription(subscription Subscription
 	if resp.Surplus > float64(subscription.Threshold) {
 		return false, nil
 	}
+	if len([]rune(resp.DisplayRoomName)) > 20 {
+		resp.DisplayRoomName = strings.Replace(resp.DisplayRoomName, "校区", "", 1)
+	}
 	mpResp, err := l.svcCtx.MiniProgram.SubscribeMessage.Send(l.ctx, &request.RequestSubscribeMessageSend{
 		ToUser:           subscription.OpenID,
 		TemplateID:       l.svcCtx.Config.MiniProgram.TemplateID,
@@ -135,6 +139,8 @@ func (l *SendLowBatteryAlertLogic) processSubscription(subscription Subscription
 		}
 		return true, fmt.Errorf("%w: errcode: %d, errmsg: %s", ErrSendFailed, mpResp.ErrCode, mpResp.ErrMsg)
 	}
+	l.Logger.Infof("Send alert to user ID %d (OpenID: %s) successfully, electricity surplus: %.2f, threshold: %d",
+		subscription.UserID, subscription.OpenID, resp.Surplus, subscription.Threshold)
 	return true, nil
 }
 
