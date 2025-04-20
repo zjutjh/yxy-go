@@ -57,7 +57,7 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 		"bindSkip":    "1",
 		"authType":    "2",
 		"ymAppId":     "1810181825222034",
-		"callbackUrl": consts.APPLICATION_URL + "/",
+		"callbackUrl": consts.ELECTRICITY_URL + "/",
 		"unionid":     req.UID,
 		"schoolCode":  consts.SCHOOL_CODE,
 	}
