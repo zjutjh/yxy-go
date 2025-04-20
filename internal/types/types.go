@@ -29,7 +29,7 @@ type GetCaptchaImageResp struct {
 type GetCardBalanceReq struct {
 	UID      string `form:"uid"`
 	DeviceID string `form:"device_id"`
-	Token    string `form:"token"`
+	Token    string `form:"token,optional"`
 }
 
 type GetCardBalanceResp struct {
@@ -39,7 +39,7 @@ type GetCardBalanceResp struct {
 type GetCardConsumptionRecordsReq struct {
 	UID       string `form:"uid"`
 	DeviceID  string `form:"device_id"`
-	Token     string `form:"token"`
+	Token     string `form:"token,optional"`
 	QueryTime string `form:"query_time"`
 }
 
@@ -112,7 +112,7 @@ type LoginBySilentReq struct {
 	UID      string `json:"uid"`
 	DeviceID string `json:"device_id"`
 	PhoneNum string `json:"phone_num,optional"`
-	Token    string `json:"token"`
+	Token    string `json:"token,optional"`
 }
 
 type LoginBySilentResp struct {
