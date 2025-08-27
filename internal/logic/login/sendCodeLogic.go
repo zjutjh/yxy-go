@@ -77,6 +77,8 @@ func (l *SendCodeLogic) SendCode(req *types.SendCodeReq) (resp *types.SendCodeRe
 			errCode = xerr.ErrPhoneNumWrong
 		case "一分钟内只能发送一次短信,请稍后再试", "短信发送超限，请一分钟后再试":
 			errCode = xerr.ErrSendLimit
+		case "短信发送超限，请明天再来":
+			errCode = xerr.ErrSendLimit
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
