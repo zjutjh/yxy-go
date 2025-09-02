@@ -107,10 +107,7 @@ func getAppSecurityToken(deviceID, securityToken string) (appSecurityToken strin
 	}
 	t := string(plainText)
 
-	timestampNano := time.Now().UnixNano()
-	seconds := timestampNano / 1e9
-	microseconds := (timestampNano % 1e9) / 1e2
-	ts := fmt.Sprintf("%v.%v", seconds, microseconds)
+	ts := fmt.Sprintf("%d", time.Now().UnixMilli())
 
 	md5Hash1 := md5.Sum([]byte(deviceID + "|YUNMA_APP|" + t + "|" + ts + "|" + consts.APP_ALL_VERSION))
 	md5HashStrUpper1 := strings.ToUpper(hex.EncodeToString(md5Hash1[:]))

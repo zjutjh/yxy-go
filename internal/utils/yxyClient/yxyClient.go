@@ -1,6 +1,7 @@
 package yxyClient
 
 import (
+	urllib "net/url"
 	"sync"
 	"yxy-go/pkg/xerr"
 
@@ -25,7 +26,15 @@ func GetClient() *resty.Client {
 
 func HttpSendPost(url string, req map[string]interface{}, headers map[string]string, resp interface{}) (*resty.Response, error) {
 	client := GetClient()
-
+	parsedURL, err := urllib.Parse(url)
+	if err != nil {
+		return nil, xerr.WithCode(xerr.ErrHttpClient, "invalid url")
+	}
+	// 根据域名判断是否需要添加 sign
+	if parsedURL.Hostname() == "compus.xiaofubao.com" {
+		sign := Sign(req)
+		headers["sign"] = sign
+	}
 	r, err := client.R().
 		SetHeaders(headers).
 		SetBody(req).
