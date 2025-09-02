@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
+	"time"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -51,8 +52,29 @@ type GetElectricityAuthTokenYxyResp struct {
 	Success bool `json:"success"`
 }
 
+type GetAuthTokenResp struct {
+	StatusCode int    `json:"statusCode"`
+	Message    string `json:"message"`
+	Data       string `json:"data"`
+	Success    bool   `json:"success"`
+}
+
 func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAuthReq) (resp *types.GetElectricityAuthResp, err error) {
 	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
+	authReq := map[string]any{
+		"appVersion": consts.APP_VERSION,
+		"nt":         time.Now().UnixMilli(),
+		"ymId":       req.UID,
+		"deviceId":   yxyClient.GenYxyDeviceID(""),
+		"platform":   "YUNMA_APP",
+	}
+	var authResp GetAuthTokenResp
+	r, err := yxyClient.HttpSendPost(consts.GET_AUTH_TOKEN, authReq, yxyHeaders, &authResp)
+	if err != nil {
+		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
+	}
+	ymAuthToken := authResp.Data
+
 	yxyReq := map[string]string{
 		"bindSkip":    "1",
 		"authType":    "2",
@@ -60,14 +82,15 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 		"callbackUrl": consts.APPLICATION_URL + "/",
 		"unionid":     req.UID,
 		"schoolCode":  consts.SCHOOL_CODE,
+		"ymAuthToken": ymAuthToken,
 	}
 
 	client := yxyClient.GetClient()
-	r, err := client.R().
+	r, err = client.R().
 		SetHeaders(yxyHeaders).
 		SetQueryParams(yxyReq).
 		Get(consts.GET_ELECTRICITY_AUTH_CODE_URL)
-	if err != nil && r.StatusCode() != 302 {
+	if r == nil || (err != nil && r.StatusCode() != 302) {
 		return nil, xerr.WithCode(xerr.ErrHttpClient, err.Error())
 	}
 
@@ -78,13 +101,16 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 		}
 		return nil, xerr.WithCode(xerr.ErrUnknown, fmt.Sprintf("yxy response: %v", r))
 	}
+	// hack 掉路由 hash模式 下url中的 /#/ 便于 query 参数提取
+	location = strings.ReplaceAll(location, "#/", "")
 	parsedURL, _ := url.Parse(location)
 	ymCode := parsedURL.Query().Get("ymCode")
 
 	var yxyResp GetElectricityAuthTokenYxyResp
 	r, err = yxyClient.HttpSendPost(consts.GET_ELECTRICITY_AUTH_TOKEN_URL,
 		map[string]interface{}{
-			"code": ymCode,
+			"authType": "2",
+			"code":     ymCode,
 		}, yxyHeaders, &yxyResp)
 	if err != nil {
 		return nil, err
@@ -97,7 +123,8 @@ func (l *GetElectricityAuthLogic) GetElectricityAuth(req *types.GetElectricityAu
 	for _, cookie := range r.Cookies() {
 		if cookie.Name == "shiroJID" {
 			shiroJID = cookie.Value
-			break
+			// 这里不break是因为会有多个重复的 shiroJID 要拿到最后一个
+			// break
 		}
 	}
 

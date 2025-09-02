@@ -1,9 +1,9 @@
 package consts
 
 const (
-	APP_ALL_VERSION = "6.2.8"
-	APP_VERSION     = "611"
-	CLIENT_ID       = "65l281jbb6wjvuo"
+	APP_ALL_VERSION = "7.3.6"
+	APP_VERSION     = "730"
+	CLIENT_ID       = "65l3attk4r095ib"
 	SCHOOL_CODE     = "10337" // ZJUT
 	COMPUS_URL      = "https://compus.xiaofubao.com"
 	APPLICATION_URL = "https://application.xiaofubao.com"
@@ -16,6 +16,7 @@ const (
 	SEND_CODE_URL          = COMPUS_URL + "/compus/user/sendLoginVerificationCode"
 	LOGIN_BY_CODE_URL      = COMPUS_URL + "/login/doLoginByVerificationCode"
 	LOGIN_BY_Silent_URL    = COMPUS_URL + "/login/doLoginBySilent"
+	GET_AUTH_TOKEN         = COMPUS_URL + "/compus/user/getAuthToken"
 )
 
 const (
