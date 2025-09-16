@@ -32,52 +32,44 @@ type LoginByCodeYxyResp struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`
 	Data       struct {
-		ID string `json:"id"`
-		// SchoolCode            string   `json:"schoolCode"`
-		// BadgeImg              string   `json:"badgeImg"`
-		// SchoolName            string   `json:"schoolName"`
-		// QrcodePayType         uint8    `json:"qrcodePayType"`
-		// Account               string   `json:"account"`
-		// AccountEncrypt        string   `json:"accountEncrypt"`
-		// UserName              string   `json:"userName"`
-		// UserType              string   `json:"userType"`
-		// MobilePhone           string   `json:"mobilePhone"`
-		// JobNo                 string   `json:"jobNo"`
-		// UserIdcard            string   `json:"userIdcard"`
-		// IdentityNo            string   `json:"identityNo"`
-		// Sex                   uint8    `json:"sex"`
-		// UserClass             string   `json:"userClass"`
-		// RealNameStatus        uint8    `json:"realNameStatus"`
-		// RegisterTime          string   `json:"regiserTime"`
-		// Birthday              string   `json:"birthday"`
-		// UserStatus            uint8    `json:"userStatus"`
+		Id string `json:"id"`
+		//SchoolCode            string `json:"schoolCode"`
+		//SchoolName            string `json:"schoolName"`
+		//QrcodePayType         int    `json:"qrcodePayType"`
+		//Account               string `json:"account"`
+		//AccountEncrypt        string `json:"accountEncrypt"`
+		//MobilePhone           string `json:"mobilePhone"`
+		//Sex                   int    `json:"sex"`
+		//RealNameStatus        int    `json:"realNameStatus"`
+		//RegiserTime           string `json:"regiserTime"`
+		//NickName              string `json:"nickName"`
+		//UserStatus            int    `json:"userStatus"`
 		BindCardStatus uint8 `json:"bindCardStatus"`
-		// BindCardTime          string   `json:"bindCardTime"`
-		// LastLogin             string   `json:"lastLogin"`
-		// HeadImg               string   `json:"headImg"`
-		// DeviceID              string   `json:"deviceId"`
-		// TestAccount           uint8    `json:"testAccount"`
-		Token string `json:"token"`
-		// TokenList             []string `json:"tokenList"`
-		// LastTokenTime         string   `json:"lastTokenTime"`
-		// JoinNewActivityStatus uint8    `json:"joinNewactivityStatus"`
-		// IsNew                 uint8    `json:"isNew"`
-		// CreateStatus          uint8    `json:"createStatus"`
-		// EacctStatus           int      `json:"eacctStatus"`
-		// SchoolClasses         uint8    `json:"schoolClasses"`
-		// SchoolNature          uint8    `json:"schoolNature"`
-		// Platform              string   `json:"platform"`
-		// CardPhone             string   `json:"cardPhone"`
-		// QrcodePrivateKey      string   `json:"qrcodePrivateKey"`
-		// BindCardRate          uint8    `json:"bindCardRate"`
-		// Points                uint8    `json:"points"`
-		// CardIdentityType      uint8    `json:"cardIdentityType"`
-		// SchoolIdentityType    uint8    `json:"schoolIdentityType"`
-		// AlumniFlag            uint8    `json:"alumniFlag"`
-		// ExtJson               string   `json:"extJson"`
-		// AuthType              uint8    `json:"authType"`
-		// JoinChatStatus        uint8    `json:"joinChatStatus"`
-		// QywechatContactStatus uint8    `json:"qywechatContactStatus"`
+		//LastLogin             string `json:"lastLogin"`
+		//HeadImg               string `json:"headImg"`
+		DeviceId string `json:"deviceId"`
+		//TestAccount           int    `json:"testAccount"`
+		//Token                 string `json:"token"`
+		//JoinNewactivityStatus int    `json:"joinNewactivityStatus"`
+		//IsNew                 int    `json:"isNew"`
+		//CreateStatus          int    `json:"createStatus"`
+		//EacctStatus           int    `json:"eacctStatus"`
+		//SchoolClasses         int    `json:"schoolClasses"`
+		//SchoolNature          int    `json:"schoolNature"`
+		//Platform              string `json:"platform"`
+		//QrcodePrivateKey      string `json:"qrcodePrivateKey"`
+		//BindCardRate          int    `json:"bindCardRate"`
+		//Points                int    `json:"points"`
+		//CardIdentityType      int    `json:"cardIdentityType"`
+		//SchoolIdentityType    int    `json:"schoolIdentityType"`
+		//AlumniFlag            int    `json:"alumniFlag"`
+		//ExtJson               string `json:"extJson"`
+		//AuthType              int    `json:"authType"`
+		//JoinChatStatus        int    `json:"joinChatStatus"`
+		//QywechatContactStatus int    `json:"qywechatContactStatus"`
+		//KeyMap                struct {
+		//	Field1 string `json:"730"`
+		//} `json:"keyMap"`
 	} `json:"data"`
 	Success bool `json:"success"`
 }
@@ -114,8 +106,7 @@ func (l *LoginByCodeLogic) LoginByCode(req *types.LoginByCodeReq) (resp *types.L
 	}
 
 	return &types.LoginByCodeResp{
-		UID:            yxyResp.Data.ID,
-		Token:          yxyResp.Data.Token,
+		UID:            yxyResp.Data.Id,
 		BindCardStatus: yxyResp.Data.BindCardStatus,
 	}, nil
 }

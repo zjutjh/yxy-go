@@ -77,6 +77,8 @@ func (l *SendCodeLogic) SendCode(req *types.SendCodeReq) (resp *types.SendCodeRe
 			errCode = xerr.ErrPhoneNumWrong
 		case "一分钟内只能发送一次短信,请稍后再试", "短信发送超限，请一分钟后再试":
 			errCode = xerr.ErrSendLimit
+		case "短信发送超限，请明天再来":
+			errCode = xerr.ErrSendLimit
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
 	}
@@ -105,10 +107,7 @@ func getAppSecurityToken(deviceID, securityToken string) (appSecurityToken strin
 	}
 	t := string(plainText)
 
-	timestampNano := time.Now().UnixNano()
-	seconds := timestampNano / 1e9
-	microseconds := (timestampNano % 1e9) / 1e2
-	ts := fmt.Sprintf("%v.%v", seconds, microseconds)
+	ts := fmt.Sprintf("%d", time.Now().UnixMilli())
 
 	md5Hash1 := md5.Sum([]byte(deviceID + "|YUNMA_APP|" + t + "|" + ts + "|" + consts.APP_ALL_VERSION))
 	md5HashStrUpper1 := strings.ToUpper(hex.EncodeToString(md5Hash1[:]))

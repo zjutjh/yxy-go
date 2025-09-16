@@ -3,6 +3,7 @@ package yxyClient
 import (
 	"fmt"
 	"strings"
+	"time"
 	"yxy-go/internal/consts"
 
 	"github.com/google/uuid"
@@ -21,12 +22,11 @@ func GenYxyDeviceID(deviceID string) string {
 func GetYxyBaseReqParam(deviceID string) (baseReq map[string]interface{}, baseHeaders map[string]string) {
 	deviceID = GenYxyDeviceID(deviceID)
 	baseReq = map[string]interface{}{
-		"appVersion":  consts.APP_VERSION,
-		"deviceId":    deviceID,
-		"platform":    "YUNMA_APP",
-		"schoolCode":  "",
-		"testAccount": 1,
-		"token":       "",
+		"appVersion": consts.APP_VERSION,
+		"deviceId":   deviceID,
+		"platform":   "YUNMA_APP",
+		"schoolCode": consts.SCHOOL_CODE,
+		"nt":         time.Now().UnixMilli(),
 	}
 	baseHeaders = map[string]string{
 		"User-Agent": fmt.Sprintf("Mozilla/5.0 (Linux; Android 12; Android for arm64; wv) "+
