@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"yxy-go/internal/manager/auth"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -17,15 +18,17 @@ import (
 
 type GetElectricityRechargeRecordsLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx        context.Context
+	svcCtx     *svc.ServiceContext
+	authManger *auth.AuthManager
 }
 
 func NewGetElectricityRechargeRecordsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetElectricityRechargeRecordsLogic {
 	return &GetElectricityRechargeRecordsLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:     logx.WithContext(ctx),
+		ctx:        ctx,
+		svcCtx:     svcCtx,
+		authManger: auth.NewAuthManager(ctx, svcCtx),
 	}
 }
 
@@ -56,7 +59,7 @@ type GetElectricityMgsRechargeRecords struct {
 	Success bool `json:"success"`
 }
 
-func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *types.GetElectricityRechargeRecordsReq) (resp *types.GetElectricityRechargeRecordsResp, err error) {
+func (l *GetElectricityRechargeRecordsLogic) fetchElectricityRechargeRecords(req *types.GetElectricityRechargeRecordsReq, token string) (resp *types.GetElectricityRechargeRecordsResp, err error) {
 	parts := strings.Split(req.RoomStrConcat, "#")
 	if len(parts) < 4 {
 		return nil, xerr.WithCode(xerr.ErrParam, fmt.Sprintf("Param room_str_concat error: %v", req.RoomStrConcat))
@@ -76,7 +79,7 @@ func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *
 	}
 
 	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
-	yxyHeaders["Cookie"] = "shiroJID=" + req.Token
+	yxyHeaders["Cookie"] = "shiroJID=" + token
 
 	var records []types.ElectricityRechargeRecord
 	switch req.Campus {
@@ -140,4 +143,14 @@ func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *
 	return &types.GetElectricityRechargeRecordsResp{
 		List: records,
 	}, nil
+}
+
+func (l *GetElectricityRechargeRecordsLogic) GetElectricityRechargeRecords(req *types.GetElectricityRechargeRecordsReq) (resp *types.GetElectricityRechargeRecordsResp, err error) {
+	result, err := l.authManger.WithAuthToken(req.Uid, func(token string) (any, error) {
+		return l.fetchElectricityRechargeRecords(req, token)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*types.GetElectricityRechargeRecordsResp), nil
 }

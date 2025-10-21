@@ -8,17 +8,8 @@ info (
 )
 
 type (
-	GetElectricityAuthReq {
-		UID string `form:"uid"`
-	}
-	GetElectricityAuthResp {
-		Token string `json:"token"`
-	}
-)
-
-type (
 	GetElectricitySurplusReq {
-		Token  string `form:"token"`
+        Uid           string `form:"uid"`
 		Campus string `form:"campus,options=zhpf|mgs"`
 	}
 	GetElectricitySurplusResp {
@@ -30,7 +21,7 @@ type (
 
 type (
 	GetElectricityRechargeRecordsReq {
-		Token         string `form:"token"`
+        Uid           string `form:"uid"`
 		Campus        string `form:"campus,options=zhpf|mgs"`
 		Page          string `form:"page"`
 		RoomStrConcat string `form:"room_str_concat"`
@@ -46,7 +37,7 @@ type (
 
 type (
 	GetElectricityUsageRecordsReq {
-		Token         string `form:"token"`
+        Uid           string `form:"uid"`
 		Campus        string `form:"campus,options=zhpf|mgs"`
 		RoomStrConcat string `form:"room_str_concat"`
 	}

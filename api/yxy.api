@@ -55,9 +55,6 @@ service yxy-api {
 	timeout: 20s
 )
 service yxy-api {
-	@handler getElectricityAuth
-	get /auth (GetElectricityAuthReq) returns (GetElectricityAuthResp)
-
 	@handler getElectricitySurplus
 	get /surplus (GetElectricitySurplusReq) returns (GetElectricitySurplusResp)
 

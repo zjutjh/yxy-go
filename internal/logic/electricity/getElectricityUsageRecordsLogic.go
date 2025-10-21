@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"yxy-go/internal/manager/auth"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -17,15 +18,17 @@ import (
 
 type GetElectricityUsageRecordsLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx        context.Context
+	svcCtx     *svc.ServiceContext
+	authManger *auth.AuthManager
 }
 
 func NewGetElectricityUsageRecordsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetElectricityUsageRecordsLogic {
 	return &GetElectricityUsageRecordsLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:     logx.WithContext(ctx),
+		ctx:        ctx,
+		svcCtx:     svcCtx,
+		authManger: auth.NewAuthManager(ctx, svcCtx),
 	}
 }
 
@@ -52,7 +55,7 @@ type GetElectricityMgsUsageRecords struct {
 	Success bool `json:"success"`
 }
 
-func (l *GetElectricityUsageRecordsLogic) GetElectricityUsageRecords(req *types.GetElectricityUsageRecordsReq) (resp *types.GetElectricityUsageRecordsResp, err error) {
+func (l *GetElectricityUsageRecordsLogic) fetchElectricityUsageRecords(req *types.GetElectricityUsageRecordsReq, token string) (resp *types.GetElectricityUsageRecordsResp, err error) {
 	parts := strings.Split(req.RoomStrConcat, "#")
 	requiredParts := 4
 	if req.Campus == "zhpf" {
@@ -76,8 +79,7 @@ func (l *GetElectricityUsageRecordsLogic) GetElectricityUsageRecords(req *types.
 	}
 
 	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
-	yxyHeaders["Cookie"] = "shiroJID=" + req.Token
-
+	yxyHeaders["Cookie"] = "shiroJID=" + token
 	var records []types.ElectricityUsageRecord
 	switch req.Campus {
 	case "zhpf":
@@ -139,4 +141,13 @@ func (l *GetElectricityUsageRecordsLogic) GetElectricityUsageRecords(req *types.
 	return &types.GetElectricityUsageRecordsResp{
 		List: records,
 	}, nil
+}
+func (l *GetElectricityUsageRecordsLogic) GetElectricityUsageRecords(req *types.GetElectricityUsageRecordsReq) (resp *types.GetElectricityUsageRecordsResp, err error) {
+	result, err := l.authManger.WithAuthToken(req.Uid, func(token string) (any, error) {
+		return l.fetchElectricityUsageRecords(req, token)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*types.GetElectricityUsageRecordsResp), nil
 }
