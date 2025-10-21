@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 	"strings"
-
 	"yxy-go/internal/consts"
+	"yxy-go/internal/manager/authManager"
 	"yxy-go/internal/svc"
 	"yxy-go/internal/types"
 	"yxy-go/internal/utils/yxyClient"
@@ -16,15 +16,17 @@ import (
 
 type GetElectricitySurplusLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx        context.Context
+	svcCtx     *svc.ServiceContext
+	authManger *authManager.AuthManager
 }
 
 func NewGetElectricitySurplusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetElectricitySurplusLogic {
 	return &GetElectricitySurplusLogic{
-		Logger: logx.WithContext(ctx),
-		ctx:    ctx,
-		svcCtx: svcCtx,
+		Logger:     logx.WithContext(ctx),
+		ctx:        ctx,
+		svcCtx:     svcCtx,
+		authManger: authManager.NewAuthManager(ctx, svcCtx),
 	}
 }
 
@@ -112,7 +114,7 @@ type GetElectricityMgsSurplusYxyResp struct {
 	Success bool `json:"success"`
 }
 
-func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectricitySurplusReq) (resp *types.GetElectricitySurplusResp, err error) {
+func (l *GetElectricitySurplusLogic) fetchElectricitySurplus(req *types.GetElectricitySurplusReq, token string) (resp *types.GetElectricitySurplusResp, err error) {
 	var bindType string
 	switch req.Campus {
 	case "zhpf":
@@ -127,7 +129,7 @@ func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectri
 	}
 
 	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
-	yxyHeaders["Cookie"] = "shiroJID=" + req.Token
+	yxyHeaders["Cookie"] = "shiroJID=" + token
 
 	var yxyResp QueryElectricityBindYxyResp
 	r, err := yxyClient.HttpSendPost(consts.QUERY_ELECTRICITY_BIND_URL, yxyReq, yxyHeaders, &yxyResp)
@@ -199,4 +201,14 @@ func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectri
 	}
 
 	return resp, nil
+}
+
+func (l *GetElectricitySurplusLogic) GetElectricitySurplus(req *types.GetElectricitySurplusReq) (resp *types.GetElectricitySurplusResp, err error) {
+	result, err := l.authManger.WithAuthToken(req.Uid, func(token string) (any, error) {
+		return l.fetchElectricitySurplus(req, token)
+	})
+	if err != nil {
+		return nil, err
+	}
+	return result.(*types.GetElectricitySurplusResp), nil
 }
