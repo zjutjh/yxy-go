@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"yxy-go/internal/consts"
-	"yxy-go/internal/manager/authManager"
+	"yxy-go/internal/manager/auth"
 	"yxy-go/internal/svc"
 	"yxy-go/internal/types"
 	"yxy-go/internal/utils/yxyClient"
@@ -18,7 +18,7 @@ type GetElectricitySurplusLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	authManger *authManager.AuthManager
+	authManger *auth.AuthManager
 }
 
 func NewGetElectricitySurplusLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetElectricitySurplusLogic {
@@ -26,7 +26,7 @@ func NewGetElectricitySurplusLogic(ctx context.Context, svcCtx *svc.ServiceConte
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		authManger: authManager.NewAuthManager(ctx, svcCtx),
+		authManger: auth.NewAuthManager(ctx, svcCtx),
 	}
 }
 

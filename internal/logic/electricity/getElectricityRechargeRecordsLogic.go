@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"yxy-go/internal/manager/authManager"
+	"yxy-go/internal/manager/auth"
 
 	"yxy-go/internal/consts"
 	"yxy-go/internal/svc"
@@ -20,7 +20,7 @@ type GetElectricityRechargeRecordsLogic struct {
 	logx.Logger
 	ctx        context.Context
 	svcCtx     *svc.ServiceContext
-	authManger *authManager.AuthManager
+	authManger *auth.AuthManager
 }
 
 func NewGetElectricityRechargeRecordsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetElectricityRechargeRecordsLogic {
@@ -28,7 +28,7 @@ func NewGetElectricityRechargeRecordsLogic(ctx context.Context, svcCtx *svc.Serv
 		Logger:     logx.WithContext(ctx),
 		ctx:        ctx,
 		svcCtx:     svcCtx,
-		authManger: authManager.NewAuthManager(ctx, svcCtx),
+		authManger: auth.NewAuthManager(ctx, svcCtx),
 	}
 }
 

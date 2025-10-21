@@ -1,4 +1,4 @@
-package authManager
+package auth
 
 import (
 	"context"
@@ -39,15 +39,7 @@ func NewAuthManager(ctx context.Context, svcCtx *svc.ServiceContext) *AuthManage
 
 // fetchAuthToken 发送请求获取AuthToken
 func (l *AuthManager) fetchAuthToken(uid string) (string, error) {
-	authReq, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
-	authReq["ymId"] = uid
-	var authResp getAuthTokenResp
-	r, err := yxyClient.HttpSendPost(consts.GET_AUTH_TOKEN, authReq, yxyHeaders, &authResp)
-	ymAuthToken, ok := authResp.Data.(string)
-	if err != nil || !ok || ymAuthToken == "" {
-		l.Errorf("yxyClient.HttpSendPost err: %v , [%s]", err, consts.GET_AUTH_TOKEN)
-		return "", xerr.WithCode(xerr.ErrHttpClient, err.Error())
-	}
+	_, yxyHeaders := yxyClient.GetYxyBaseReqParam("")
 	yxyReq := map[string]string{
 		"bindSkip":    "1",
 		"authType":    "2",
@@ -55,11 +47,11 @@ func (l *AuthManager) fetchAuthToken(uid string) (string, error) {
 		"callbackUrl": consts.APPLICATION_URL + "/",
 		"unionid":     uid,
 		"schoolCode":  consts.SCHOOL_CODE,
-		"ymAuthToken": ymAuthToken,
+		"ymAuthToken": "",
 	}
 
 	client := yxyClient.GetClient()
-	r, err = client.R().
+	r, err := client.R().
 		SetHeaders(yxyHeaders).
 		SetQueryParams(yxyReq).
 		Get(consts.GET_AUTH_CODE_URL)
@@ -80,13 +72,15 @@ func (l *AuthManager) fetchAuthToken(uid string) (string, error) {
 	parsedURL, _ := url.Parse(location)
 	ymCode := parsedURL.Query().Get("ymCode")
 
+	var authResp getAuthTokenResp
+
 	r, err = yxyClient.HttpSendPost(consts.GET_AUTH_TOKEN_URL,
 		map[string]interface{}{
 			"authType": "2",
 			"code":     ymCode,
 		}, yxyHeaders, &authResp)
 	if err != nil {
-		return "", xerr.WithCode(xerr.ErrUnknown, fmt.Sprintf("yxy response: %v", r))
+		return "", err
 	}
 
 	if authResp.StatusCode != 0 {
@@ -100,6 +94,7 @@ func (l *AuthManager) fetchAuthToken(uid string) (string, error) {
 			// break
 		}
 	}
+	l.Logger.Infof("%s获取token成功", uid)
 	return shiroJID, nil
 }
 
@@ -107,7 +102,7 @@ const cacheTTL = 24 * time.Hour
 
 // getCacheKey 获取缓存token的key
 func getCacheKey(uid string) string {
-	// TODO 考虑后续修改为 auth_token:uid, 因为这个auth目前看来与业务无关, 可以通用
+	// TODO(typo) 考虑后续修改为 auth_token:electricity:uid
 	return "elec:auth_token:" + uid
 }
 
@@ -137,19 +132,19 @@ func (l *AuthManager) getCachedAuthToken(uid string) (string, error) {
 	}
 }
 
-type AuthHandler func(token string) (any, error)
-
 // WithAuthToken 包装需要使用token的业务函数, 只需要将其作为回调传入, 以下处理函数会自动处理token的获取和缓存, 并将token注入业务函数
-func (l *AuthManager) WithAuthToken(uid string, fn AuthHandler) (any, error) {
+// TODO(feature) 加一个appid的参数, 实现不同业务(校车, 电费)的token管理
+func (l *AuthManager) WithAuthToken(uid string, fn func(token string) (any, error)) (any, error) {
 	// 1. 从缓存获取 token
 	token, err := l.getCachedAuthToken(uid)
 	if err != nil {
-		return nil, xerr.WithCode(xerr.ErrUnknown, err.Error())
+		return nil, err
 	}
 
 	// 2. 调用回调函数
 	result, err := fn(token)
 	if err == nil {
+		l.Logger.Debugf("%s成功命中token缓存", uid)
 		return result, nil
 	}
 
