@@ -63,7 +63,6 @@ func (l *GetCardConsumptionRecordsLogic) GetCardConsumptionRecords(req *types.Ge
 	yxyReq["ymId"] = req.UID
 	yxyReq["schoolCode"] = consts.SCHOOL_CODE
 	yxyReq["queryTime"] = req.QueryTime
-	yxyReq["token"] = req.Token
 
 	var yxyResp GetCardConsumptionRecordsYxyResp
 	r, err := yxyClient.HttpSendPost(consts.GET_CARD_CONSUMPTION_RECORDS_URL, yxyReq, yxyHeaders, &yxyResp)
@@ -73,9 +72,9 @@ func (l *GetCardConsumptionRecordsLogic) GetCardConsumptionRecords(req *types.Ge
 
 	if !yxyResp.Success {
 		errCode := xerr.ErrUnknown
-		if yxyResp.Message == "登录已过期，请重新登录[user no find]" {
+		if yxyResp.Message == "登录已过期,请重新登录[user no find]" {
 			errCode = xerr.ErrUserNotFound
-		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" || yxyResp.Message == "登录已过期，请重新登录[token change]" {
+		} else if yxyResp.Message == "您的账号已被登出,请重新登录" {
 			errCode = xerr.ErrAccountLoggedOut
 		} else if yxyResp.Message == "用户还未绑卡" {
 			errCode = xerr.ErrNotBindCard
