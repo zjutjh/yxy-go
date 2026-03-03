@@ -30,8 +30,9 @@ func NewGetCardBalanceLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 type GetCardBalanceYxyResp struct {
 	StatusCode int    `json:"statusCode"`
 	Message    string `json:"message"`
-	Data       string `json:"data"`
+	BizCode    string `json:"bizCode"`
 	Success    bool   `json:"success"`
+	Data       string `json:"data"`
 }
 
 func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp *types.GetCardBalanceResp, err error) {
@@ -39,7 +40,6 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 	yxyReq["ymId"] = req.UID
 	yxyReq["schoolCode"] = consts.SCHOOL_CODE
 	yxyReq["walletNo"] = "1"
-	yxyReq["token"] = req.Token
 
 	var yxyResp GetCardBalanceYxyResp
 	r, err := yxyClient.HttpSendPost(consts.GET_CARD_BALANCE_URL, yxyReq, yxyHeaders, &yxyResp)
@@ -48,12 +48,14 @@ func (l *GetCardBalanceLogic) GetCardBalance(req *types.GetCardBalanceReq) (resp
 	}
 
 	if yxyResp.StatusCode != 0 {
+		bizCode := yxyResp.BizCode
 		errCode := xerr.ErrUnknown
-		if yxyResp.Message == "登录已过期，请重新登录[user no find]" {
+		switch bizCode {
+		case "10010":
 			errCode = xerr.ErrUserNotFound
-		} else if yxyResp.Message == "您的账号已被登出，请重新登录[deviceId changed]" || yxyResp.Message == "登录已过期，请重新登录[token change]" {
+		case "10011":
 			errCode = xerr.ErrAccountLoggedOut
-		} else if yxyResp.Message == "组织编号不能为空" {
+		case "-1":
 			errCode = xerr.ErrNotBindCard
 		}
 		return nil, xerr.WithCode(errCode, fmt.Sprintf("yxy response: %v", r))
